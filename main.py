@@ -9,14 +9,12 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 
 from middleware import WeekendCallbackMiddleware
 
+bot = Bot(token=settings.bot_token.get_secret_value())
 
-# вам что то испправить - you need to fix something
-# вам что то приобрести - buy something for you
 
 
 async def main():
-    bot = Bot(token=settings.bot_token.get_secret_value())
-    dp = Dispatcher(storage=MemoryStorage())
+    dp = Dispatcher(bot=bot, storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
     dp.message.outer_middleware(WeekendCallbackMiddleware())
     dp.include_routers(command_handlers.router, registration_handlers.router, user_handlers.router)

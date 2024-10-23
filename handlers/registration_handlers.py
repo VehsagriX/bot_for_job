@@ -4,6 +4,7 @@ from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 from bot_states import User, Request
 from filters import check_email
+from config import CHANNEL_ID
 
 router = Router()
 
@@ -13,7 +14,6 @@ router = Router()
 async def get_name(message: Message, state: FSMContext):
     await message.answer('Напишите как вас Фамилию и Имя?')
     await state.set_state(User.user_name)
-
 
 
 @router.message(F.text, User.user_name)
@@ -41,13 +41,15 @@ async def check_phone(message: Message, state: FSMContext):
 @router.message(F.text, User.user_email)
 @flags.chat_action(action=ChatAction.TYPING)
 async def email_chek(message: Message, state: FSMContext):
+    from main import bot as b
     msg = message.text.split()
     email = [i for i in msg if check_email(i)]
     if len(email) > 0:
         email = email[0]
         await state.update_data(user_email=email)
         data = await state.get_data()
-        print(data)
+        await b.send_message(chat_id=CHANNEL_ID,
+                             text=f'Ваше имя: {data.get("user_name")}\nВаша фамилия: {data.get("user_last_name")}')
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
