@@ -16,7 +16,7 @@ bot = Bot(token=settings.bot_token.get_secret_value())
 async def main():
     dp = Dispatcher(bot=bot, storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
-    dp.message.outer_middleware(WeekendCallbackMiddleware())
+    # dp.message.outer_middleware(WeekendCallbackMiddleware())
     dp.include_routers(command_handlers.router, registration_handlers.router, user_handlers.router)
     logging.basicConfig(level=logging.INFO)
 

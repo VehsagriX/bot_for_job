@@ -4,7 +4,8 @@ from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 from bot_states import User
 from filters import check_email
-
+from handlers.examination import get_message_in_group
+from config import CHANNEL_ID
 router = Router()
 
 
@@ -33,6 +34,7 @@ async def check_phone(message: Message, state: FSMContext):
         await message.answer('Вы ввели неверный номер повторите попытку')
         await state.update_data(User.user_phone)
         return
+    await state.update_data(user_phone=message.text)
     await message.answer('Напишите вашу рабочую почту')
     await state.set_state(User.user_email)
 
@@ -47,7 +49,7 @@ async def email_chek(message: Message, state: FSMContext):
         await state.update_data(user_email=email)
         data = await state.get_data()
         await message.answer('Спасибо, регистрация прошла успешно')
-        return data
+        await get_message_in_group(CHANNEL_ID, data)
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
