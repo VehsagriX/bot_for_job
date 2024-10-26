@@ -1,10 +1,9 @@
 from aiogram import Router, F, flags
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
-from bot_states import User, Request
+from bot_states import User
 from filters import check_email
-from config import CHANNEL_ID
 
 router = Router()
 
@@ -32,7 +31,7 @@ async def check_phone(message: Message, state: FSMContext):
     number = message.text
     if not number[1:].isdigit() or len(number) > 13:
         await message.answer('Вы ввели неверный номер повторите попытку')
-        await state.set_state(User.user_phone)
+        await state.update_data(User.user_phone)
         return
     await message.answer('Напишите вашу рабочую почту')
     await state.set_state(User.user_email)
@@ -41,15 +40,14 @@ async def check_phone(message: Message, state: FSMContext):
 @router.message(F.text, User.user_email)
 @flags.chat_action(action=ChatAction.TYPING)
 async def email_chek(message: Message, state: FSMContext):
-    from main import bot as b
     msg = message.text.split()
     email = [i for i in msg if check_email(i)]
     if len(email) > 0:
         email = email[0]
         await state.update_data(user_email=email)
         data = await state.get_data()
-        await b.send_message(chat_id=CHANNEL_ID,
-                             text=f'Ваше имя: {data.get("user_name")}\nВаша фамилия: {data.get("user_last_name")}')
+        await message.answer('Спасибо, регистрация прошла успешно')
+        return data
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)

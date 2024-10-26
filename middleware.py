@@ -1,7 +1,7 @@
 import datetime
 from typing import Any, Callable, Dict, Awaitable
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject, Message
+from aiogram.types import TelegramObject
 
 
 
@@ -29,4 +29,5 @@ class WeekendCallbackMiddleware(BaseMiddleware):
             show_alert=True
         )
         return
+
 

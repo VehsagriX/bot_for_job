@@ -9,6 +9,7 @@ class User(StatesGroup):
     user_last_name = State()
     user_phone = State()
     user_email = State()
+    user_address = State()
 
 
 class Request(StatesGroup):

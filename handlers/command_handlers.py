@@ -3,11 +3,12 @@ from aiogram.enums import ChatAction
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
-from keyboard import  keyboard_answer
+from keyboard import keyboard_answer
 from aiogram.fsm.context import FSMContext
-from bot_states import User, Request
+from bot_states import User
 from handlers.examination import is_user_subscraibed
 from config import CHANNEL_ID
+
 router = Router()
 
 
@@ -37,6 +38,8 @@ async def handle_start(message: Message, state: FSMContext):
     else:
         await message.answer('Изините но с вами я не буду работать')
         await message.answer('Всего доброго')
+
+
 @router.message(Command(commands=["cancel"]))
 @router.message(F.text.lower() == "отмена")
 @flags.chat_action(ChatAction.TYPING)
@@ -48,6 +51,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
         reply_markup=ReplyKeyboardRemove()
     )
     await message.answer('Всего доброго!😉')
+
 
 @router.message(Command('help'))
 async def handle_help(message: Message):
