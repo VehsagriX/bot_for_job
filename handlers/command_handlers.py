@@ -24,7 +24,7 @@ async def handle_start(message: Message, state: FSMContext):
             await state.set_state(User.user_login)
             await state.set_state(User.chat_id)
             content = Text(
-                "Hello, ",
+                "Hello, Motheer",
                 Bold(message.from_user.full_name)
             )
             await state.clear()
