@@ -3,10 +3,12 @@ from aiogram.enums import ChatAction
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
-from keyboard import keyboard_answer
+
+from add_to_file import is_registered
+from keyboard import keyboard_answer, kb_run_step, kb_get_started
 from aiogram.fsm.context import FSMContext
 from bot_states import User
-from handlers.examination import is_user_subscraibed
+from examination import is_user_subscraibed
 from config import CHANNEL_ID
 
 router = Router()
@@ -17,27 +19,39 @@ router = Router()
 async def handle_start(message: Message, state: FSMContext):
     is_member = await is_user_subscraibed(CHANNEL_ID, message.from_user.id)
     if is_member:
-        await state.set_state(User.user_id)
-        await state.set_state(User.user_login)
-        await state.set_state(User.chat_id)
-        content = Text(
-            "Hello, ",
-            Bold(message.from_user.full_name)
-        )
-        await state.clear()
+        if not is_registered(message.from_user.id):
+            await state.set_state(User.user_id)
+            await state.set_state(User.user_login)
+            await state.set_state(User.chat_id)
+            content = Text(
+                "Hello, ",
+                Bold(message.from_user.full_name)
+            )
+            await state.clear()
 
-        await message.answer(
-            **content.as_kwargs()
-        )
-        await state.update_data(user_id=message.from_user.id)
-        await state.update_data(user_login=message.from_user.username)
-        await state.update_data(chat_id=message.chat.id)
-        await message.answer('Вы не зарегистрированы, вы готовы пройти регистрацию?', reply_markup=keyboard_answer())
-        await state.set_state(User.user_name)
-        await state.set_state(User.user_last_name)
+            await message.answer(
+                **content.as_kwargs()
+            )
+            await state.update_data(user_id=message.from_user.id)
+            await state.update_data(user_login=message.from_user.username)
+            await state.update_data(chat_id=message.chat.id)
+            await message.answer('Вы не зарегистрированы, вы готовы пройти регистрацию?',
+                                 reply_markup=keyboard_answer())
+            await state.set_state(User.user_name)
+            await state.set_state(User.user_last_name)
+        else:
+            await message.answer('Добрый день, я помощник технической поддержки компании KOINOTI NAV. '
+                                 'Выберите что вы хотели сделать', reply_markup=kb_get_started())
+
     else:
         await message.answer('Изините но с вами я не буду работать')
         await message.answer('Всего доброго')
+
+
+@router.message(Command(commands=['/get_stared']))
+@router.message(F.text.lower() == "начать работу")
+async def handle_run(message: Message):
+    pass
 
 
 @router.message(Command(commands=["cancel"]))

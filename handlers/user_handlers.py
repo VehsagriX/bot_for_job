@@ -1,4 +1,4 @@
-from aiogram import Router, F, flags
+from aiogram import Router, F, flags, Dispatcher
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.enums import MessageEntityType, ChatAction
 from aiogram.fsm.context import FSMContext
@@ -7,6 +7,9 @@ from filters import check_email
 
 router = Router()
 
+
+async def on_startup(message: Message):
+    pass
 
 @router.message(F.text.lower() == 'запрос')
 @router.message(F.text.lower() == 'инцидент')
@@ -47,5 +50,4 @@ async def handler_description(message: Message, state: FSMContext):
     data = await state.get_data()
     msg = f'''Ваш id = {data.get('user_id')}.\nВас зовут {data.get('user_last_name')} {data.get('user_name')}.\n
     Ваша почта {data.get('user_email')}.\nУ вас {data.get('request_name')}: {data.get('request_description')}'''
-    print(data)
     await message.answer(msg)

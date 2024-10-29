@@ -2,10 +2,13 @@ from aiogram import Router, F, flags
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
+
+from add_to_file import add_user
 from bot_states import User
 from filters import check_email
-from handlers.examination import get_message_in_group
+from examination import get_message_user_in_group
 from config import CHANNEL_ID
+
 router = Router()
 
 
@@ -20,11 +23,14 @@ async def get_name(message: Message, state: FSMContext):
 @flags.chat_action(action=ChatAction.TYPING)
 async def get_phone(message: Message, state: FSMContext):
     msg = message.text.split(' ')
-    await state.update_data(user_name=msg[0])
-    await state.update_data(user_last_name=msg[1])
-    await message.answer('Напишите ваш рабочий номер телефона, как с вами можем связаться?')
-    await state.set_state(User.user_phone)
-
+    if len(msg) == 2:
+        await state.update_data(user_name=msg[0])
+        await state.update_data(user_last_name=msg[1])
+        await message.answer('Напишите ваш рабочий номер телефона, как с вами можем связаться?')
+        await state.set_state(User.user_phone)
+    else:
+        await message.answer('Введите правильно Имя Фамилию (Иван Иванов)')
+        await state.set_state(User.user_name)
 
 @router.message(F.text, User.user_phone)
 @flags.chat_action(action=ChatAction.TYPING)
@@ -49,8 +55,10 @@ async def email_chek(message: Message, state: FSMContext):
         await state.update_data(user_email=email)
         data = await state.get_data()
         await message.answer('Спасибо, регистрация прошла успешно')
-        await get_message_in_group(CHANNEL_ID, data)
+        await get_message_user_in_group(CHANNEL_ID, data)
+        add_user(data)
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
         return
+

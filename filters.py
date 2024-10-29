@@ -1,19 +1,9 @@
 import re
 
-from aiogram.filters import BaseFilter
-from aiogram.types import Message
 
 def check_email(email):
-    EMAIL_REGEX = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-    email_candidates = re.findall(EMAIL_REGEX, email)
-    if email_candidates:
+    valid_email = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
+    if valid_email:
         return True
     else:
         return False
-
-class EmailCheck(BaseFilter):
-    key = 'is_email'
-    pattern = re.compile('')
-
-    async def __call__(self, message: Message) -> bool:
-        return self.pattern.match(message.text)

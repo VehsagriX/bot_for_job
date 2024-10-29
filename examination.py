@@ -9,10 +9,14 @@ async def is_user_subscraibed(chanel_url: str, user_id: int) -> bool:
     return True
 
 
-async def get_message_in_group(channel_id: str, result: dict) -> None:
+async def get_message_user_in_group(channel_id: str, result: dict) -> None:
     from main import bot
     my_text = f""" Имя: {result.get('user_name')}\nФамилия: {result.get('user_last_name')}\nПочта: {result.get('user_email')}\nНомер: {result.get('user_phone')}
               """
     await bot.send_message(chat_id=channel_id, text=my_text)
 
 
+async def get_message_request_in_group(channel_id: str, result: dict) -> None:
+    from main import bot
+    my_text = f""""""
+    await bot.send_message(chat_id=channel_id, text=my_text)
