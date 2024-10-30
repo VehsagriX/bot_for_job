@@ -8,7 +8,7 @@ from add_to_file import is_registered
 from keyboard import keyboard_answer, kb_run_step, kb_get_started
 from aiogram.fsm.context import FSMContext
 from bot_states import User
-from examination import is_user_subscraibed
+from examination import is_user_subscribed
 from config import CHANNEL_ID
 
 router = Router()
@@ -17,7 +17,7 @@ router = Router()
 @router.message(F.text, CommandStart())
 @flags.chat_action(ChatAction.TYPING)
 async def handle_start(message: Message, state: FSMContext):
-    is_member = await is_user_subscraibed(CHANNEL_ID, message.from_user.id)
+    is_member = await is_user_subscribed(message.from_user.id)
     if is_member:
         if not is_registered(message.from_user.id):
             await state.set_state(User.user_id)

@@ -3,8 +3,10 @@ from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 from bot_states import Request
+from examination import get_message_request_in_group
 from keyboard import keyboard_builder
 from aiogram.filters import StateFilter
+from add_to_file import get_user_name
 
 router = Router()
 
@@ -46,16 +48,13 @@ async def handler_title(message: Message, state: FSMContext):
 
 
 @router.message(F.text, Request.request_description)
-@router.message(F.text, F.text.len() > 50 | F.photo | F.file)
-@router.message(F.text, F.text.len() > 50, F.photo | F.file)
-@router.message(F.text, F.text.len() > 50, F.photo, F.file)
 @flags.chat_action(ChatAction.TYPING)
 async def handler_description(message: Message, state: FSMContext):
+    if len(message.text) < 20:
+        await message.answer('Этого недостаточно, попробуйте описать более развернуто')
+        await state.set_state(Request.request_description)
     await state.update_data(request_description=message.text)
-
     await message.reply('Спасибо, я передам всю информацию специалистам')
-
+    await state.update_data()
     data = await state.get_data()
-    msg = f'''Ваш id = {data.get('user_id')}.\nВас зовут {data.get('user_last_name')} {data.get('user_name')}.\n
-    Ваша почта {data.get('user_email')}.\nУ вас {data.get('request_name')}: {data.get('request_description')}'''
-    await message.answer(msg)
+    await get_message_request_in_group(data)

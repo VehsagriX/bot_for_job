@@ -24,13 +24,14 @@ async def get_name(message: Message, state: FSMContext):
 async def get_phone(message: Message, state: FSMContext):
     msg = message.text.split(' ')
     if len(msg) == 2:
-        await state.update_data(user_name=msg[0])
-        await state.update_data(user_last_name=msg[1])
+        await state.update_data(user_last_name=msg[0])
+        await state.update_data(user_name=msg[1])
         await message.answer('Напишите ваш рабочий номер телефона, как с вами можем связаться?')
         await state.set_state(User.user_phone)
     else:
         await message.answer('Введите правильно Имя Фамилию (Иван Иванов)')
         await state.set_state(User.user_name)
+
 
 @router.message(F.text, User.user_phone)
 @flags.chat_action(action=ChatAction.TYPING)
@@ -61,4 +62,3 @@ async def email_chek(message: Message, state: FSMContext):
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
         return
-
