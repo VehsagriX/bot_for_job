@@ -49,13 +49,15 @@ async def handle_start(message: Message, state: FSMContext):
 
 
 @router.message(Command(commands=['/get_stared']))
+@router.message(F.text.lower() == "начать работу 💼")
 @router.message(F.text.lower() == "начать работу")
 async def handle_run(message: Message):
-    pass
+    await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step())
 
 
 @router.message(Command(commands=["cancel"]))
-@router.message(F.text.lower() == "отмена")
+@router.message(F.text.lower() == "отмена 🔚")
+@router.message(F.text.lower() == 'отмена')
 @flags.chat_action(ChatAction.TYPING)
 async def cmd_cancel(message: Message, state: FSMContext):
     await state.clear()

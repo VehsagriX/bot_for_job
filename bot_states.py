@@ -16,4 +16,4 @@ class Request(StatesGroup):
     company_name = State()
     request_title = State()
     request_description = State()
-    request_file_id = State()
+    # request_file_id = State()

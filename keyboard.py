@@ -1,17 +1,21 @@
 from aiogram import types
 
 
-
-
 def kb_get_started() -> types.ReplyKeyboardMarkup:
     kb = [
         [
-            types.KeyboardButton(text='Начать работу'),
+            types.KeyboardButton(text='Начать работу 💼'),
             types.KeyboardButton(text='Отмена 🔚'),
         ]
     ]
-    keyboard = types.ReplyKeyboardMarkup(keyboard=kb, one_time_keyboard=True)
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
     return keyboard
+
+
 def kb_run_step() -> types.ReplyKeyboardMarkup:
     kb = [
         [
@@ -25,7 +29,6 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     keyboard = types.ReplyKeyboardMarkup(
         keyboard=kb,
         resize_keyboard=True,
-        one_time_keyboard=True,
     )
     return keyboard
 

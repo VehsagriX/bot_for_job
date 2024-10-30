@@ -12,7 +12,6 @@ from middleware import WeekendCallbackMiddleware
 bot = Bot(token=settings.bot_token.get_secret_value())
 
 
-
 async def main():
     dp = Dispatcher(bot=bot, storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
