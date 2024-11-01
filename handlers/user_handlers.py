@@ -1,7 +1,10 @@
+from datetime import datetime
 from aiogram import Router, F, flags
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
+from pyexpat.errors import messages
+
 from bot_states import Request
 from examination import get_message_request_in_group
 from keyboard import keyboard_builder
@@ -22,10 +25,14 @@ async def on_startup(message: Message, state: FSMContext):
 
 @router.message(F.text.lower() == 'запрос')
 @router.message(F.text.lower() == 'инцидент')
-@router.message(Request.request_type)
+@router.message(Request.request_type, Request.request_id, Request.request_creator)
 @flags.chat_action(ChatAction.TYPING)
 async def handle_button(message: Message, state: FSMContext):
     await state.update_data(request_type=message.text)
+    my_data = datetime.now()
+    result = f'{my_data.day}{my_data.month}{my_data.year}{my_data.hour}{my_data.minute}'
+    await state.update_data(request_id=f'{result}{message.from_user.id}')
+    await state.update_data(request_creator=message.from_user.id)
     await message.answer('Какую компанию вы представляете')
     await state.set_state(Request.company_name)
 
@@ -57,4 +64,7 @@ async def handler_description(message: Message, state: FSMContext):
     await message.reply('Спасибо, я передам всю информацию специалистам')
     await state.update_data()
     data = await state.get_data()
-    await get_message_request_in_group(data)
+    user_id = message.from_user.id
+    await get_message_request_in_group(data, user_id)
+
+

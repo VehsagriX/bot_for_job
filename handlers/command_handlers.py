@@ -69,6 +69,12 @@ async def cmd_cancel(message: Message, state: FSMContext):
     await message.answer('Всего доброго!😉')
 
 
+@router.message(Command('/myprofile'))
+@router.message(F.text.lower() == "моя анкета 📝")
+async def edit_profile(message: Message):
+    pass
+
+
 @router.message(Command('help'))
 async def handle_help(message: Message):
     pass

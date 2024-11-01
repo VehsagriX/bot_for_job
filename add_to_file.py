@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+
 
 
 def add_user(user: dict):
@@ -11,13 +13,33 @@ def is_registered(user_id: int):
     df = pd.read_excel('user_file.xlsx')
     return user_id in df.user_id.values
 
-def get_user_name(user_id: int):
-    df = pd.read_excel('user_file.xlsx')
-    user_last_name = df.user_last_name.values[df.user_id == user_id]
-    user_name = df.user_name.values[df.user_id == user_id]
-    return f'{user_last_name} {user_name}'
 
-print(get_user_name(6972606957))
+def user_anketa(user_id: int):
+    df = pd.read_excel('user_file.xlsx')
+    user = df[df.user_id == user_id]
+    return user
+
+def get_user_name(user_id: int):
+    user = user_anketa(user_id)
+    user_last_name = user.user_last_name.values[0]
+    user_name = user.user_name.values[0]
+    return user_last_name, user_name
+
+def get_user_data(user_id: int):
+    user = user_anketa(user_id)
+    name, last_name = get_user_name(user_id)
+    phone = int(user.user_phone.values[0])
+    email = user.user_email.values[0]
+    return name, last_name, phone, email
+
+
+
+
+
+
+
+
+
 
 # import wmi
 #
