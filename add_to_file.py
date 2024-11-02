@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-
 
 
 def add_user(user: dict):
@@ -19,11 +17,13 @@ def user_anketa(user_id: int):
     user = df[df.user_id == user_id]
     return user
 
+
 def get_user_name(user_id: int):
     user = user_anketa(user_id)
     user_last_name = user.user_last_name.values[0]
     user_name = user.user_name.values[0]
     return user_last_name, user_name
+
 
 def get_user_data(user_id: int):
     user = user_anketa(user_id)
@@ -31,15 +31,6 @@ def get_user_data(user_id: int):
     phone = int(user.user_phone.values[0])
     email = user.user_email.values[0]
     return name, last_name, phone, email
-
-
-
-
-
-
-
-
-
 
 # import wmi
 #

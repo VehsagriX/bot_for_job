@@ -4,8 +4,8 @@ from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
 
-from add_to_file import is_registered
-from keyboard import keyboard_answer, kb_run_step, kb_get_started
+from add_to_file import is_registered, get_user_data
+from keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb
 from aiogram.fsm.context import FSMContext
 from bot_states import User
 from examination import is_user_subscribed
@@ -48,14 +48,14 @@ async def handle_start(message: Message, state: FSMContext):
         await message.answer('Всего доброго')
 
 
-@router.message(Command(commands=['/get_stared']))
+@router.message(F.text, Command('get_started'))
 @router.message(F.text.lower() == "начать работу 💼")
 @router.message(F.text.lower() == "начать работу")
 async def handle_run(message: Message):
     await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step())
 
 
-@router.message(Command(commands=["cancel"]))
+@router.message(F.text, Command("cancel"))
 @router.message(F.text.lower() == "отмена 🔚")
 @router.message(F.text.lower() == 'отмена')
 @flags.chat_action(ChatAction.TYPING)
@@ -71,9 +71,12 @@ async def cmd_cancel(message: Message, state: FSMContext):
 
 @router.message(Command('/myprofile'))
 @router.message(F.text.lower() == "моя анкета 📝")
-async def edit_profile(message: Message):
-    pass
-
+@router.message(F.text.lower() == "моя анкета")
+async def view_profile(message: Message):
+    name, last_name, phone, email = get_user_data(message.from_user.id)
+    my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}'
+    await message.answer(text=my_text,reply_markup=edit_kb())
+    #Нужно Реализовать изменение данных
 
 @router.message(Command('help'))
 async def handle_help(message: Message):

@@ -8,6 +8,7 @@ from bot_states import User
 from filters import check_email
 from examination import get_message_user_in_group
 from config import CHANNEL_ID
+from handlers.command_handlers import handle_run
 
 router = Router()
 
@@ -15,7 +16,7 @@ router = Router()
 @router.message(F.text.lower() == 'регистрация')
 @flags.chat_action(action=ChatAction.TYPING)
 async def get_name(message: Message, state: FSMContext):
-    await message.answer('Напишите как вас Фамилию и Имя?')
+    await message.answer('Напишите вашу Фамилию и Имя?')
     await state.set_state(User.user_name)
 
 
@@ -56,9 +57,10 @@ async def email_chek(message: Message, state: FSMContext):
         await state.update_data(user_email=email)
         data = await state.get_data()
         await message.answer('Спасибо, регистрация прошла успешно')
-        await get_message_user_in_group(CHANNEL_ID, data)
+        await get_message_user_in_group(data, CHANNEL_ID)
         add_user(data)
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
         return
+    await handle_run(message)
