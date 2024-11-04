@@ -32,6 +32,9 @@ def get_user_data(user_id: int):
     email = user.user_email.values[0]
     return name, last_name, phone, email
 
+
+
+
 # import wmi
 #
 # # Initializing the wmi constructor

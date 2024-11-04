@@ -1,13 +1,14 @@
 from datetime import datetime
 from aiogram import Router, F, flags
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
+from aiohttp import request
 from pyexpat.errors import messages
 
 from bot_states import Request
 from examination import get_message_request_in_group
-from keyboard import keyboard_builder
+from keyboard import keyboard_builder, inline_request_chat_kb
 from aiogram.filters import StateFilter
 from add_to_file import get_user_name
 
@@ -60,11 +61,24 @@ async def handler_description(message: Message, state: FSMContext):
     if len(message.text) < 20:
         await message.answer('Этого недостаточно, попробуйте описать более развернуто')
         await state.set_state(Request.request_description)
-    await state.update_data(request_description=message.text)
-    await message.reply('Спасибо, я передам всю информацию специалистам')
-    await state.update_data()
+    else:
+        await state.update_data(request_description=message.text)
+        await message.reply('Спасибо, я передам всю информацию специалистам')
+        data = await state.get_data()
+        user_id = message.from_user.id
+        await get_message_request_in_group(data, user_id)
+        await state.set_state(Request.request_admin)
+
+
+@router.message(Request.request_admin)
+@router.callback_query(F.data == "accepted")
+async def callback_accept(call: CallbackQuery, state: FSMContext):
+    await state.update_data(request_admin=call.from_user.id)
+    print(Request)
     data = await state.get_data()
-    user_id = message.from_user.id
-    await get_message_request_in_group(data, user_id)
-
-
+    print(data)
+    name, last_name = get_user_name(data.get('request_creator'))
+    text = f"""ID: {data.get('request_id')}\nТип заявки: {data.get('request_type')}\nКомпания: {data.get('company_name')}
+Создатель заявки: {name} {last_name}\nЗаголовок: {data.get('request_title')}\nОписание: {data.get('request_description')}
+ID Создателя: {data.get('request_creator')}"""
+    await call.bot.send_message(chat_id=call.from_user.id, text=text, reply_markup=inline_request_chat_kb())

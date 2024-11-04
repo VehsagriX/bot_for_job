@@ -18,4 +18,5 @@ class Request(StatesGroup):
     request_description = State()
     request_id = State()
     request_creator = State()
-
+    request_admin = State()
+    

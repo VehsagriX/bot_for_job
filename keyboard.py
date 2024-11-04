@@ -1,6 +1,6 @@
 from aiogram import types
-from aiogram.types import ReplyKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import InlineKeyboardMarkup
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 
 def kb_get_started() -> types.ReplyKeyboardMarkup:
@@ -80,3 +80,18 @@ def edit_kb() -> types.ReplyKeyboardMarkup:
         input_field_placeholder="Выберите что вам нужно"
     )
     return keyboard
+
+
+def inline_request_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text='Принять', callback_data='accepted')
+    builder.adjust(2)
+    return builder.as_markup()
+
+def inline_request_chat_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text='Завершить работу', callback_data='finished')
+    builder.button(text='Отклонить', callback_data='reject')
+    builder.button(text='Не справился', callback_data='stupid')
+    builder.adjust(3)
+    return builder.as_markup()
