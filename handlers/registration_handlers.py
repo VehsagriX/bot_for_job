@@ -1,4 +1,5 @@
 from aiogram import Router, F, flags
+
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
@@ -10,7 +11,9 @@ from examination import get_message_user_in_group
 from config import CHANNEL_ID
 from handlers.command_handlers import handle_run
 
+
 router = Router()
+
 
 
 @router.message(F.text.lower() == 'регистрация')

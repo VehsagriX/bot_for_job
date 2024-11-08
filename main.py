@@ -16,7 +16,7 @@ async def main():
     dp = Dispatcher(bot=bot, storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
     # dp.message.outer_middleware(WeekendCallbackMiddleware())
-    dp.include_routers(command_handlers.router, registration_handlers.router, user_handlers.router)
+    dp.include_routers(command_handlers.router, user_handlers.router, registration_handlers.router)
     logging.basicConfig(level=logging.INFO)
 
     await bot.delete_webhook(drop_pending_updates=True)
