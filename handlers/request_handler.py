@@ -1,18 +1,19 @@
 from datetime import datetime
-from gc import callbacks
+from tkinter.messagebox import YESNO
 
 from aiogram import Router, F, flags
 from aiogram.types import Message, CallbackQuery
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
-
+from aiohttp import request
 
 from bot_states import Request
-from examination import get_message_request_in_group
+from crud_request_file import add_request
+from send_message_in_group import get_message_request_in_group
 from handlers.command_handlers import handle_start_subscribed, handle_run
 from keyboard import keyboard_builder, inline_request_chat_kb
 
-from add_to_file import get_user_name
+from crud_user_file import get_user_name
 
 router = Router()
 
@@ -58,10 +59,13 @@ async def handler_description(message: Message, state: FSMContext):
         await message.answer('Этого недостаточно, попробуйте описать более развернуто')
         await state.set_state(Request.request_description)
     else:
-        await state.update_data(request_description=message.text)
         await state.set_state(Request.request_admin)
+        await state.update_data(request_description=message.text)
+        await state.update_data(request_admin='Никто')
         await message.reply('Спасибо, я передам всю информацию специалистам')
         data = await state.get_data()
+        print(data)
+        add_request(data)
         user_id = message.from_user.id
         await get_message_request_in_group(data, user_id)
         # Пооопробоовть этоо изменение, еслии не поолучитсся, тто рабоотать с переменной data

@@ -8,11 +8,11 @@ from aiogram.fsm.state import default_state
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
 
-from add_to_file import is_registered, get_user_data
+from crud_user_file import is_registered, get_user_data
 from keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb, keyboard_builder
 from aiogram.fsm.context import FSMContext
 from bot_states import User, Request
-from examination import is_user_subscribed
+from send_message_in_group import is_user_subscribed
 
 router = Router()
 

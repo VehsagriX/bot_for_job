@@ -1,7 +1,9 @@
+
+
 from aiogram.enums import ChatMemberStatus
 
 from config import CHANNEL_ID
-from add_to_file import get_user_name
+from crud_user_file import get_user_name
 from keyboard import inline_request_kb
 
 

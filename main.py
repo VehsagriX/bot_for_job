@@ -4,7 +4,7 @@ from aiogram import Bot
 from aiogram import Dispatcher
 from config import settings
 from aiogram.fsm.storage.memory import MemoryStorage
-from handlers import command_handlers, user_handlers, registration_handlers
+from handlers import command_handlers, request_handler, registration_handlers
 from aiogram.utils.chat_action import ChatActionMiddleware
 
 from middleware import WeekendCallbackMiddleware
@@ -16,7 +16,7 @@ async def main():
     dp = Dispatcher(bot=bot, storage=MemoryStorage())
     dp.message.middleware(ChatActionMiddleware())
     # dp.message.outer_middleware(WeekendCallbackMiddleware())
-    dp.include_routers(command_handlers.router, user_handlers.router, registration_handlers.router)
+    dp.include_routers(command_handlers.router, request_handler.router, registration_handlers.router)
     logging.basicConfig(level=logging.INFO)
 
     await bot.delete_webhook(drop_pending_updates=True)

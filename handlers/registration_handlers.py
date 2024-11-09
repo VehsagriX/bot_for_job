@@ -4,10 +4,10 @@ from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 
-from add_to_file import add_user
+from crud_user_file import add_user
 from bot_states import User
 from filters import check_email
-from examination import get_message_user_in_group
+from send_message_in_group import get_message_user_in_group
 from config import CHANNEL_ID
 from handlers.command_handlers import handle_run
 
@@ -62,6 +62,7 @@ async def email_chek(message: Message, state: FSMContext):
         await message.answer('Спасибо, регистрация прошла успешно')
         await get_message_user_in_group(data, CHANNEL_ID)
         add_user(data)
+        await state.clear()
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
