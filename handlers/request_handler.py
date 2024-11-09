@@ -11,8 +11,7 @@ from bot_states import Request
 from crud_request_file import add_request
 from send_message_in_group import get_message_request_in_group
 from handlers.command_handlers import handle_start_subscribed, handle_run
-from keyboard import keyboard_builder, inline_request_chat_kb
-
+from inline_keyboard import inline_request_chat_kb
 from crud_user_file import get_user_name
 
 router = Router()
@@ -73,7 +72,8 @@ async def handler_description(message: Message, state: FSMContext):
 
 #
 @router.callback_query(F.data == "accepted",)
-async def callback_accept(call: CallbackQuery, state: FSMContext):
+async def callback_accept(call: CallbackQuery, state: FSMContext, data: dict):
+    print(data)
     await state.update_data(request_admin=call.from_user.id)
     print(call)
 #     data = await state.get_data()

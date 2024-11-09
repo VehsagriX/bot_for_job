@@ -4,7 +4,7 @@ from aiogram.enums import ChatMemberStatus
 
 from config import CHANNEL_ID
 from crud_user_file import get_user_name
-from keyboard import inline_request_kb
+from inline_keyboard import inline_request_kb
 
 
 async def is_user_subscribed(user_id, channel_id: str = CHANNEL_ID) -> bool:
@@ -28,5 +28,5 @@ async def get_message_request_in_group(result: dict, user_id: int, channel_id: s
     my_text = f"""ID: {result.get('request_id')}\nТип заявки: {result.get('request_type')}\nКомпания: {result.get('company_name')}
 Создатель заявки: {name} {last_name}\nЗаголовок: {result.get('request_title')}\nОписание: {result.get('request_description')}
 ID Создателя: {result.get('request_creator')}"""
-    await bot.send_message(chat_id=channel_id, text=my_text, reply_markup=inline_request_kb())
-    return result
+    await bot.send_message(chat_id=channel_id, text=my_text, reply_markup=inline_request_kb(result))
+
