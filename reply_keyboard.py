@@ -82,5 +82,21 @@ def edit_kb() -> types.ReplyKeyboardMarkup:
     return keyboard
 
 
+def edit_key_kb() -> types.ReplyKeyboardMarkup:
+    kb = [
+        [
+            types.KeyboardButton(text='Почта 📧'),
+            types.KeyboardButton(text='Номер 📱'),
+        ]
+    ]
+
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        one_time_keyboard=True,
+        input_field_placeholder="Выберите что вам нужно"
+    )
+    return keyboard
+
 
 

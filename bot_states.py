@@ -19,3 +19,7 @@ class Request(StatesGroup):
     request_description = State()
     request_id = State()
     request_creator = State()
+
+class EditState(StatesGroup):
+    edit_key = State()
+    edit_value = State()

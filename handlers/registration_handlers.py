@@ -40,10 +40,11 @@ async def get_phone(message: Message, state: FSMContext):
 @router.message(F.text, User.user_phone)
 @flags.chat_action(action=ChatAction.TYPING)
 async def check_phone(message: Message, state: FSMContext):
-    number = message.text
-    if not number[1:].isdigit() or len(number) > 13:
+    number = message.text[1:]
+    print(number)
+    if not number.isdigit() or len(number) > 12 :
         await message.answer('Вы ввели неверный номер повторите попытку')
-        await state.update_data(User.user_phone)
+        await state.set_state(User.user_phone)
         return
     await state.update_data(user_phone=message.text)
     await message.answer('Напишите вашу рабочую почту')

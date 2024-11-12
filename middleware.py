@@ -1,7 +1,7 @@
 import datetime
 from typing import Any, Callable, Dict, Awaitable
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject
+from aiogram.types import TelegramObject, Message
 
 
 
@@ -31,3 +31,27 @@ class WeekendCallbackMiddleware(BaseMiddleware):
         return
 
 
+class ChatTypeMiddleware(BaseMiddleware):  # [1]
+    async def __call__(
+            self,
+            handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
+            event: Message,
+            data: Dict[str, Any]
+    ) -> Any:
+        # Если сегодня не суббота и не воскресенье,
+        # то продолжаем обработку.
+        if event.chat.type != 'private':
+            return
+        else:
+        # В противном случае отвечаем на колбэк самостоятельно
+        # и прекращаем дальнейшую обработку
+            result = await handler(event, data)
+            return result
+
+    #     if
+    #
+    # async def __call__(self, message: Message) -> bool:  # [3]
+    #     if isinstance(self.chat_type, str):
+    #         return message.chat.type == self.chat_type
+    #     else:
+    #         return message.chat.type in self.chat_type

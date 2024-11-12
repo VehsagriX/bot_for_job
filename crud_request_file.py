@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 
+from aiohttp import request
+
 
 def add_request(request: dict):
     if os.path.exists("request_file.xlsx"):
@@ -16,6 +18,12 @@ def add_request(request: dict):
 def get_all_request(user_id: int):
     pass
 
-def get_request_by_value(some_value: str):
-    pass
+def get_request_by_id(request_id: int):
+    df = pd.read_excel('request_file.xlsx')
+    request = df[df.request_id == request_id]
+    return request
 
+def change_value_request(request_id: int, edit_key, value):
+    request = get_request_by_id(request_id)
+    request[edit_key] = value
+    return request

@@ -1,9 +1,10 @@
 import os.path
 
 import pandas as pd
+from pandas import DataFrame
 
 
-def add_user(user: dict):
+def add_user(user: dict) -> None:
     if os.path.exists("user_file.xlsx"):
         df = pd.read_excel('user_file.xlsx')
         user_added = pd.concat([df, pd.DataFrame([user])])
@@ -14,31 +15,34 @@ def add_user(user: dict):
         user_added.to_excel('user_file.xlsx', index=False)
 
 
-def is_registered(user_id: int):
+def is_registered(user_id: int) -> bool:
     if os.path.exists('user_file.xlsx'):
         df = pd.read_excel('user_file.xlsx')
         return user_id in df.user_id.values
     return False
 
-def get_user(user_id: int):
+def get_user(user_id: int) -> DataFrame:
     df = pd.read_excel('user_file.xlsx')
     user = df[df.user_id == user_id]
     return user
 
 
-def get_user_name(user_id: int):
+def get_user_name(user_id: int) -> tuple:
     user = get_user(user_id)
     user_last_name = user.user_last_name.values[0]
     user_name = user.user_name.values[0]
     return user_last_name, user_name
 
 
-def get_user_data(user_id: int):
+def get_user_data(user_id: int) -> tuple:
     user = get_user(user_id)
     name, last_name = get_user_name(user_id)
     phone = int(user.user_phone.values[0])
     email = user.user_email.values[0]
     return name, last_name, phone, email
+
+def edit_profile_for_value(user_id: int, edit_key: str, value: str | int) -> str:
+    pass
 
 # import wmi
 #
@@ -52,4 +56,5 @@ def get_user_data(user_id: int):
 # for process in f.Win32_Process():
 #     # Displaying the P_ID and P_Name of the process
 #     print(f"{process.ProcessId:<10} {process.Name}")
-# print(get_user_name())
+
+

@@ -1,18 +1,18 @@
 from datetime import datetime
-from tkinter.messagebox import YESNO
+
 
 from aiogram import Router, F, flags
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, ReplyKeyboardRemove
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
-from aiohttp import request
+
 
 from bot_states import Request
-from crud_request_file import add_request
+from crud_request_file import add_request, change_value_request
 from send_message_in_group import get_message_request_in_group
-from handlers.command_handlers import handle_start_subscribed, handle_run
-from inline_keyboard import inline_request_chat_kb
-from crud_user_file import get_user_name
+from handlers.command_handlers import handle_run
+
+
 
 router = Router()
 
@@ -70,22 +70,10 @@ async def handler_description(message: Message, state: FSMContext):
         # Пооопробоовть этоо изменение, еслии не поолучитсся, тто рабоотать с переменной data
 
 
-#
-@router.callback_query(F.data == "accepted",)
-async def callback_accept(call: CallbackQuery, state: FSMContext, data: dict):
-    print(data)
-    await state.update_data(request_admin=call.from_user.id)
-    print(call)
-#     data = await state.get_data()
-#     print(data)
-#     name, last_name = get_user_name(data.get('request_creator'))
-#     text = f"""ID: {data.get('request_id')}\nТип заявки: {data.get('request_type')}\nКомпания: {data.get('company_name')}
-# Создатель заявки: {name} {last_name}\nЗаголовок: {data.get('request_title')}\nОписание: {data.get('request_description')}
-# ID Создателя: {data.get('request_creator')}"""
-#     await call.bot.send_message(chat_id=call.from_user.id, text=text, reply_markup=inline_request_chat_kb())
+
 
 
 @router.message(F.text, Request())
 async def error_message(message: Message):
-    await message.answer('Я не понимаю, выберите то что вам нужно')
+    await message.answer('Я не понимаю, выберите то что вам нужно ')
     await handle_run(message)
