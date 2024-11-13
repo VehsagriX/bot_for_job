@@ -35,7 +35,7 @@ def keyboard_builder() -> types.ReplyKeyboardMarkup:
         [
             types.KeyboardButton(text="Запрос"),
             types.KeyboardButton(text="Инцидент"),
-            types.KeyboardButton(text='Отмена'),
+            types.KeyboardButton(text='Назад ◀️'),
         ],
     ]
     keyboard = types.ReplyKeyboardMarkup(
@@ -69,7 +69,7 @@ def edit_kb() -> types.ReplyKeyboardMarkup:
     kb = [
         [
             types.KeyboardButton(text='Изменить данные'),
-            types.KeyboardButton(text='Назад'),
+            types.KeyboardButton(text='Назад ◀️'),
         ]
     ]
 
@@ -87,6 +87,7 @@ def edit_key_kb() -> types.ReplyKeyboardMarkup:
         [
             types.KeyboardButton(text='Почта 📧'),
             types.KeyboardButton(text='Номер 📱'),
+            types.KeyboardButton(text='Назад ◀️'),
         ]
     ]
 

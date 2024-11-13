@@ -42,6 +42,9 @@ def get_user_data(user_id: int) -> tuple:
     return name, last_name, phone, email
 
 def edit_profile_for_value(user_id: int, edit_key: str, value: str | int) -> str:
+    #{'edit_state': True,
+    # 'edit_email': 'user_email',
+    # 'edit_value_phone': 'xasan.irgashev.2@mail.ru'}
     pass
 
 # import wmi

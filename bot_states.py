@@ -21,5 +21,8 @@ class Request(StatesGroup):
     request_creator = State()
 
 class EditState(StatesGroup):
-    edit_key = State()
-    edit_value = State()
+    edit_state = State()
+    edit_phone = State()
+    edit_email = State()
+    edit_value_phone = State()
+    edit_value_email = State()

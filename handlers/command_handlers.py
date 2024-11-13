@@ -5,6 +5,7 @@ from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
+from numpy.random import set_state
 
 from crud_user_file import is_registered, get_user_data, edit_profile_for_value
 from reply_keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb, keyboard_builder, edit_key_kb
@@ -84,7 +85,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(Command('/myprofile'))
 @router.message(F.text.lower() == "моя анкета 📝")
 @router.message(F.text.lower() == "моя анкета")
-async def view_profile(message: Message):
+async def view_profile(message: Message, state: FSMContext):
     name, last_name, phone, email = get_user_data(message.from_user.id)
     my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}'
     await message.answer(text=my_text, reply_markup=edit_kb())
@@ -95,7 +96,7 @@ async def view_profile(message: Message):
 @router.message(F.text == 'изменить данные')
 async def change_profile(message: Message, state: FSMContext):
     await message.answer('Выберите какие данные будете изменять⬇️', reply_markup=edit_key_kb())
-    await state.set_state(EditState.edit_key)
+    await state.set_state(EditState.edit_state)
 
 
 

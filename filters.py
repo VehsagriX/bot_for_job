@@ -12,4 +12,11 @@ def check_email(email):
 
 
 
+def check_num(num: str) -> bool:
+    if not num[1:].isdigit() or len(num) < 9:
+        return False
+    else:
+        return True
+
+
 

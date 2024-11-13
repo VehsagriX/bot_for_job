@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 
 from crud_user_file import add_user
 from bot_states import User
-from filters import check_email
+from filters import check_email, check_num
 from send_message_in_group import get_message_user_in_group
 from config import CHANNEL_ID
 from handlers.command_handlers import handle_run
@@ -40,9 +40,7 @@ async def get_phone(message: Message, state: FSMContext):
 @router.message(F.text, User.user_phone)
 @flags.chat_action(action=ChatAction.TYPING)
 async def check_phone(message: Message, state: FSMContext):
-    number = message.text[1:]
-    print(number)
-    if not number.isdigit() or len(number) > 12 :
+    if not check_num(message.text):
         await message.answer('Вы ввели неверный номер повторите попытку')
         await state.set_state(User.user_phone)
         return
@@ -53,7 +51,7 @@ async def check_phone(message: Message, state: FSMContext):
 
 @router.message(F.text, User.user_email)
 @flags.chat_action(action=ChatAction.TYPING)
-async def email_chek(message: Message, state: FSMContext):
+async def email_check(message: Message, state: FSMContext):
     msg = message.text.split()
     email = [i for i in msg if check_email(i)]
     if len(email) > 0:
