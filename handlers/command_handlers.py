@@ -5,9 +5,9 @@ from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
-from numpy.random import set_state
 
-from crud_user_file import is_registered, get_user_data, edit_profile_for_value
+
+from crud_user_file import is_registered, get_user_data
 from reply_keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb, keyboard_builder, edit_key_kb
 
 from bot_states import User, Request, EditState
@@ -16,7 +16,6 @@ from send_message_in_group import is_user_subscribed
 router = Router()
 
 
-# private
 
 
 @router.message(F.text, CommandStart())
@@ -30,7 +29,7 @@ async def handle_start_subscribed(message: Message, state: FSMContext):
             await state.set_state(User.user_login)
             await state.set_state(User.chat_id)
             content = Text(
-                "Hello",
+                "Hello ",
                 Bold(message.from_user.full_name)
             )
             await state.clear()
@@ -67,6 +66,12 @@ async def on_startup(message: Message, state: FSMContext):
                          reply_markup=keyboard_builder())
     await state.set_state(Request.request_type)
 
+@router.message(F.text.lower() == 'назад ◀️',Request.request_type)
+@router.message(F.text.lower() == 'назад ◀️', StateFilter(default_state))
+async def get_back(message: Message, state: FSMContext):
+    await state.clear()
+    await handle_run(message)
+
 
 @router.message(F.text, Command("cancel"))
 @router.message(F.text.lower() == "отмена 🔚")
@@ -85,9 +90,9 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(Command('/myprofile'))
 @router.message(F.text.lower() == "моя анкета 📝")
 @router.message(F.text.lower() == "моя анкета")
-async def view_profile(message: Message, state: FSMContext):
-    name, last_name, phone, email = get_user_data(message.from_user.id)
-    my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}'
+async def view_profile(message: Message):
+    name, last_name, phone, email, company, departament = get_user_data(message.from_user.id)
+    my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}\nКомпания: {company}\nОтдел: {departament}'
     await message.answer(text=my_text, reply_markup=edit_kb())
 
 
@@ -98,7 +103,11 @@ async def change_profile(message: Message, state: FSMContext):
     await message.answer('Выберите какие данные будете изменять⬇️', reply_markup=edit_key_kb())
     await state.set_state(EditState.edit_state)
 
-
+@router.message(F.text.lower() == 'назад ◀️',EditState.edit_state)
+@router.message(F.text.lower() == 'назад ◀️', StateFilter(default_state))
+async def get_back(message: Message, state: FSMContext):
+    await state.clear()
+    await handle_run(message)
 
 
 

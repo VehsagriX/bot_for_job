@@ -1,7 +1,6 @@
 import os.path
-
 import pandas as pd
-from pandas import DataFrame
+
 
 
 def add_user(user: dict) -> None:
@@ -21,7 +20,8 @@ def is_registered(user_id: int) -> bool:
         return user_id in df.user_id.values
     return False
 
-def get_user(user_id: int) -> DataFrame:
+
+def get_user(user_id: int) -> pd.DataFrame:
     df = pd.read_excel('user_file.xlsx')
     user = df[df.user_id == user_id]
     return user
@@ -39,13 +39,18 @@ def get_user_data(user_id: int) -> tuple:
     name, last_name = get_user_name(user_id)
     phone = int(user.user_phone.values[0])
     email = user.user_email.values[0]
-    return name, last_name, phone, email
+    company_name = user.company_name.values[0]
+    department = user.department.values[0]
+    return name, last_name, phone, email, company_name, department
+
 
 def edit_profile_for_value(user_id: int, edit_key: str, value: str | int) -> str:
-    #{'edit_state': True,
-    # 'edit_email': 'user_email',
-    # 'edit_value_phone': 'xasan.irgashev.2@mail.ru'}
-    pass
+    user = get_user(user_id)
+    user.loc[user['user_id'] == user_id, edit_key] = value # edit key value for user_id
+    user.to_excel('user_file.xlsx', index=False) # save edited table to user_file.xlsx
+
+    return f"Ваши данные успешно измены"
+
 
 # import wmi
 #
@@ -59,5 +64,3 @@ def edit_profile_for_value(user_id: int, edit_key: str, value: str | int) -> str
 # for process in f.Win32_Process():
 #     # Displaying the P_ID and P_Name of the process
 #     print(f"{process.ProcessId:<10} {process.Name}")
-
-

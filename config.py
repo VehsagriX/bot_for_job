@@ -1,8 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 
-CHANNEL_ID = '-4555803331'
-
+CHANNEL_ID_ADMIN = '-4555803331'
+CHANNEL_ID_USER = '-4546613771'
 
 class Settings(BaseSettings):
     bot_token: SecretStr

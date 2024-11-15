@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
-def inline_request_kb(r) -> InlineKeyboardMarkup:
+def inline_request_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text='Принять', callback_data='accepted')
     return builder.as_markup()

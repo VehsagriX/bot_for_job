@@ -7,7 +7,7 @@ def kb_get_started() -> types.ReplyKeyboardMarkup:
     kb = [
         [
             types.KeyboardButton(text='Начать работу 💼'),
-            types.KeyboardButton(text='Отмена 🔚'),
+            types.KeyboardButton(text='Назад ◀️'),
         ]
     ]
     keyboard = types.ReplyKeyboardMarkup(
@@ -25,7 +25,7 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     kb_builder.button(text='Моя анкета 📝'),
     kb_builder.button(text='Мои заявки в работе ⏳'),
     kb_builder.button(text='Отмена 🔚')
-    kb_builder.adjust(2)
+    kb_builder.adjust(2,1,1)
 
     return kb_builder.as_markup(resize_keyboard=True)
 

@@ -7,8 +7,8 @@ from aiogram.fsm.context import FSMContext
 from crud_user_file import add_user
 from bot_states import User
 from filters import check_email, check_num
-from send_message_in_group import get_message_user_in_group
-from config import CHANNEL_ID
+
+
 from handlers.command_handlers import handle_run
 
 
@@ -57,13 +57,27 @@ async def email_check(message: Message, state: FSMContext):
     if len(email) > 0:
         email = email[0]
         await state.update_data(user_email=email)
-        data = await state.get_data()
-        await message.answer('Спасибо, регистрация прошла успешно')
-        await get_message_user_in_group(data, CHANNEL_ID)
-        add_user(data)
-        await state.clear()
+        await message.answer('Какую компанию вы представляете?')
+        await state.set_state(User.company_name)
     else:
         await message.reply("Пожалуйста, введите корректный email")
         await state.set_state(User.user_email)
         return
+
+
+
+@router.message(F.text, User.company_name)
+async def get_company_name(message: Message, state: FSMContext):
+    await state.update_data(company_name=message.text)
+    await message.answer('Из какого вы отдела?')
+    await state.set_state(User.department)
+
+
+@router.message(F.text, User.department)
+async def get_departament(message: Message, state: FSMContext):
+    await state.update_data(department=message.text)
+    data = await state.get_data()
+    await message.answer('Спасибо, регистрация прошла успешно')
+    add_user(data)
+    await state.clear()
     await handle_run(message)

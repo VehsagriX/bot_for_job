@@ -9,16 +9,20 @@ class User(StatesGroup):
     user_last_name = State()
     user_phone = State()
     user_email = State()
-
+    company_name = State()
+    department = State()
+    is_admin = State()
 
 class Request(StatesGroup):
     request_type = State()
-    company_name = State()
     request_title = State()
     request_admin = State()
     request_description = State()
     request_id = State()
     request_creator = State()
+    login_creator = State()
+    request_status = State()
+
 
 class EditState(StatesGroup):
     edit_state = State()
