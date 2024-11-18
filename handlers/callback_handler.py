@@ -14,8 +14,8 @@ async def callback_accept(call: CallbackQuery):
     text = [x.split(':') for x in text]
 
     request_id = text[1][1].strip()
-    print(text)
-    print(request_id)
+
+
     text[-2][1] = str(call.from_user.id)
     edit_key = 'request_admin'
     edit_value = call.from_user.id

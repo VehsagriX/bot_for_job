@@ -22,7 +22,7 @@ async def get_message_user_in_group(result: dict, channel_id: str = CHANNEL_ID_U
 async def get_message_request_in_group(result: dict | str, user_id: int, channel_id: str = CHANNEL_ID_ADMIN) -> None:
     from main import bot
     name, last_name, company = get_user_name(user_id)
-    print(result)
+
     my_text = f"""Тип заявки: {result.get('request_type')}\nID: {result.get('request_id')}\nКомпания: {company}
 Создатель заявки: {name} {last_name}\nЗаголовок: {result.get('request_title')}\nОписание: {result.get('request_description')}
 ID Создателя: {result.get('request_creator')}\nСвязаться с заявителем: @{result.get('login_creator')}\nИсполнитель: {result.get('request_admin')}
