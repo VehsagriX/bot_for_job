@@ -7,7 +7,7 @@ def kb_get_started() -> types.ReplyKeyboardMarkup:
     kb = [
         [
             types.KeyboardButton(text='Начать работу 💼'),
-            types.KeyboardButton(text='Назад ◀️'),
+            types.KeyboardButton(text='Отмена 🔚'),
         ]
     ]
     keyboard = types.ReplyKeyboardMarkup(

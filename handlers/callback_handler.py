@@ -16,9 +16,9 @@ async def callback_accept(call: CallbackQuery):
     request_id = text[1][1].strip()
 
 
-    text[-2][1] = str(call.from_user.id)
+    text[-2][1] = '@' + call.from_user.username
     edit_key = 'request_admin'
-    edit_value = call.from_user.id
+    edit_value = call.from_user.username
     change_value_request(request_id, edit_key, edit_value)
     text[-1][1] = 'В работе'
     key_status = 'request_status'

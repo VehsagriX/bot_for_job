@@ -125,8 +125,15 @@ async def get_back(message: Message, state: FSMContext):
 
 @router.message(Command('help'))
 async def handle_help(message: Message):
-    pass
-
+    text = """Данный бот предназначен для улучшения качества связи и взаимодействия с KOINOT INNOVATION AND TECHNOLOGY.
+Возможности бота: 
+✅	создать заявку;
+✅	посмотреть заявку в работе и предоставить информацию об исполнителе данной заявки;
+✅	пользователь может воспользоваться функциями изменения данных (телефон, почта).
+/start - Для начала работы с ботом необходимо запустить команду - /start, или дать команду боту путем сообщения /start.
+/cancel – Отменяет и выходит из работы с ботом, для следующего взаимодействия нужно запустить бот
+"""
+    await message.answer(text)
 
 
 @router.message(F.text, StateFilter(default_state))
