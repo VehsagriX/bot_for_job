@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 from aiogram import Router, F, flags
-from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
 
@@ -58,7 +58,7 @@ async def handler_description(message: Message, state: FSMContext):
         await message.reply('Спасибо, я передам всю информацию специалистам')
         await handle_run(message)
         data = await state.get_data()
-        print(data)
+
         add_request(data)
         user_id = message.from_user.id
         await get_message_request_in_group(data, user_id)

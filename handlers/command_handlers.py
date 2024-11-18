@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
 
-
+from crud_request_file import show_all_requests
 from crud_user_file import is_registered, get_user_data
 from reply_keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb, keyboard_builder, edit_key_kb
 
@@ -102,6 +102,18 @@ async def view_profile(message: Message):
 async def change_profile(message: Message, state: FSMContext):
     await message.answer('Выберите какие данные будете изменять⬇️', reply_markup=edit_key_kb())
     await state.set_state(EditState.edit_state)
+
+
+@router.message(F.text == 'Мои заявки в работе ⏳')
+@router.message(F.text.lower() == 'Мои заявки в работе ⏳')
+async def show_all_request(message: Message):
+    user_id = message.from_user.id
+    result = show_all_requests(user_id)
+    if len(result) > 0:
+        for text in result:
+            await message.answer(text)
+    else:
+        await message.answer('У вас сейчас нет заявок в работе')
 
 @router.message(F.text.lower() == 'назад ◀️',EditState.edit_state)
 @router.message(F.text.lower() == 'назад ◀️', StateFilter(default_state))

@@ -26,17 +26,21 @@ def get_user(user_id: int) -> pd.DataFrame:
     user = df[df.user_id == user_id]
     return user
 
+def get_user_table() -> pd.DataFrame:
+    df = pd.read_excel('user_file.xlsx')
+    return df
 
 def get_user_name(user_id: int) -> tuple:
     user = get_user(user_id)
     user_last_name = user.user_last_name.values[0]
     user_name = user.user_name.values[0]
-    return user_last_name, user_name
+    company_name = user.company_name.values[0]
+    return user_last_name, user_name, company_name
 
 
 def get_user_data(user_id: int) -> tuple:
     user = get_user(user_id)
-    name, last_name = get_user_name(user_id)
+    name, last_name, company = get_user_name(user_id)
     phone = int(user.user_phone.values[0])
     email = user.user_email.values[0]
     company_name = user.company_name.values[0]
@@ -45,9 +49,9 @@ def get_user_data(user_id: int) -> tuple:
 
 
 def edit_profile_for_value(user_id: int, edit_key: str, value: str | int) -> str:
-    user = get_user(user_id)
-    user.loc[user['user_id'] == user_id, edit_key] = value # edit key value for user_id
-    user.to_excel('user_file.xlsx', index=False) # save edited table to user_file.xlsx
+    table = get_user_table()
+    table.loc[table['user_id'] == user_id, edit_key] = value # edit key value for user_id
+    table.to_excel('user_file.xlsx', index=False) # save edited table to user_file.xlsx
 
     return f"Ваши данные успешно измены"
 
