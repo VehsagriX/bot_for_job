@@ -33,8 +33,8 @@ async def handle_button(message: Message, state: FSMContext) -> None:
 async def handler_title(message: Message, state: FSMContext) -> None:
     await state.update_data(request_title=message.text)
     await message.answer("""Пожалуйста, опишите вашу проблему как можно подробнее. 
-    Если у вас есть визуальные материалы (фотографии или видео), которые помогут лучше понять ситуацию, вы сможете 
-    отправить их исполнителю личным сообщением, после принятия вашей заявки в работу.""")
+Если у вас есть визуальные материалы (фотографии или видео), которые помогут лучше понять ситуацию, вы сможете 
+отправить их исполнителю личным сообщением, после принятия вашей заявки в работу.""")
     await state.set_state(Request.request_description)
 
 

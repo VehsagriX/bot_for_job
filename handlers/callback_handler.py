@@ -15,7 +15,6 @@ async def callback_accept(call: CallbackQuery):
 
     request_id = text[1][1].strip()
 
-
     text[-2][1] = '@' + call.from_user.username
     edit_key = 'request_admin'
     edit_value = call.from_user.username
@@ -28,9 +27,11 @@ async def callback_accept(call: CallbackQuery):
     id_user = [x for x in text if 'ID Создателя' in x][0][1].strip()
     text = [':'.join(x) for x in text]
     result = '\n'.join(text)
+
     await call.message.edit_text(result)
     await call.bot.send_message(chat_id=call.from_user.id, text=result, reply_markup=inline_request_chat_admin())
     await call.bot.send_message(chat_id=id_user, text=result)
+
 
 @router.callback_query(F.data == 'stupid')
 async def callback_failed(call: CallbackQuery):
@@ -46,7 +47,11 @@ async def callback_failed(call: CallbackQuery):
     status_value = text[-1][1]
     change_value_request(request_id, key_status, status_value)
 
-
+    text = [':'.join(x) for x in text]
+    result = '\n'.join(text)
+    print(result)
+    await call.message.edit_text(text=result)
+    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result, reply_markup=inline_request_kb())
 
 @router.callback_query(F.data == 'finished')
 async def callback_finished(call: CallbackQuery):
@@ -57,7 +62,7 @@ async def callback_finished(call: CallbackQuery):
     # print(user_id)
     # print(call.message.chat.id)
     text[-1][1] = "Выполнено"
-    #исправить работу после завершения
+    # исправить работу после завершения
     request_id = text[1][1].strip()
     # print(request_id)
     status_key = 'request_status'
@@ -66,7 +71,7 @@ async def callback_finished(call: CallbackQuery):
     change_value_request(request_id, status_key, status_value)
     result = [':'.join(x) for x in text]
     result = '\n'.join(result)
-    # print(result)
-    await call.bot.send_message(chat_id=user_id, text=result+'‼️‼️‼️')
-    await call.message.edit_text(result+'‼️‼️‼️')
-    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result+'‼️‼️‼️')
+
+    await call.bot.send_message(chat_id=user_id, text=result + '‼️‼️‼️')
+    await call.message.edit_text(result + '‼️‼️‼️')
+    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result + '‼️‼️‼️')
