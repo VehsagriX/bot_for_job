@@ -20,7 +20,7 @@ router = Router()
 @router.message(F.text.lower() == 'регистрация')
 @flags.chat_action(action=ChatAction.TYPING)
 async def get_name(message: Message, state: FSMContext)-> None:
-    await message.answer('Напишите вашу Фамилию и Имя?')
+    await message.answer('Напишите вашу Фамилию и Имя')
     await state.set_state(User.user_name)
 
 
@@ -31,7 +31,7 @@ async def get_phone(message: Message, state: FSMContext)-> None:
     if len(msg) == 2:
         await state.update_data(user_last_name=msg[0])
         await state.update_data(user_name=msg[1])
-        await message.answer('Напишите ваш рабочий номер телефона, как с вами можем связаться?')
+        await message.answer('Напишите ваш рабочий номер телефона.')
         await state.set_state(User.user_phone)
     else:
         await message.answer('Введите правильно Имя Фамилию (Иван Иванов)')
@@ -42,11 +42,11 @@ async def get_phone(message: Message, state: FSMContext)-> None:
 @flags.chat_action(action=ChatAction.TYPING)
 async def check_phone(message: Message, state: FSMContext)-> None:
     if not check_num(message.text):
-        await message.answer('Вы ввели неверный номер повторите попытку')
+        await message.answer('Вы ввели неверный номер. Повторите попытку')
         await state.set_state(User.user_phone)
         return
     await state.update_data(user_phone=message.text)
-    await message.answer('Напишите вашу рабочую почту')
+    await message.answer('Напишите вашу рабочую почту.')
     await state.set_state(User.user_email)
 
 

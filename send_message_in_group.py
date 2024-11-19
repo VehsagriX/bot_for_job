@@ -9,8 +9,8 @@ async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_ID_USER, ch
     from main import bot
     member_user = await bot.get_chat_member(chat_id=channel_user_id, user_id=user_id)
     member_admin = await bot.get_chat_member(chat_id=channel_admin_id, user_id=user_id)
-    # Cделать админ панель, из этого
-    if member_user.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
+
+    if member_user.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR] or member_admin.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
         return False
     return True
 

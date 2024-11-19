@@ -40,13 +40,13 @@ async def handle_start_subscribed(message: Message, state: FSMContext)-> None:
             await state.update_data(user_id=message.from_user.id)
             await state.update_data(user_login=message.from_user.username)
             await state.update_data(chat_id=message.chat.id)
-            await message.answer('Вы не зарегистрированы, вы готовы пройти регистрацию?',
+            await message.answer('Вы не зарегистрированы. Готовы пройти регистрацию?',
                                  reply_markup=keyboard_answer())
             await state.set_state(User.user_name)
             await state.set_state(User.user_last_name)
         else:
             await message.answer('Добрый день, я помощник технической поддержки компании KOINOTI NAV. '
-                                 'Выберите что вы хотели сделать ⬇️', reply_markup=kb_get_started())
+                                 'Выберите что вы хотели бы сделать ⬇️', reply_markup=kb_get_started())
 
     else:
         await cancel_message(message)
@@ -62,7 +62,7 @@ async def handle_run(message: Message)-> None:
 @router.message(F.text.lower() == 'создать заявку ✍️')
 @router.message(F.text.lower() == 'создать заявку')
 async def on_startup(message: Message, state: FSMContext)-> None:
-    await message.answer('Запрос - приобретение что то нового\nИнцедент - исправление чего-либо⬇️',
+    await message.answer('Запрос - приобретение чего-то нового\nИнцидент - исправление чего-либо⬇️',
                          reply_markup=keyboard_builder())
     await state.set_state(Request.request_type)
 
@@ -138,5 +138,5 @@ async def handle_help(message: Message)-> None:
 
 @router.message(F.text, StateFilter(default_state))
 async def cancel_message(message: Message)-> None:
-    await message.answer('Изините но с вами я не буду работать')
+    await message.answer('Извините, но с вами я не буду работать!')
     await message.answer('Всего доброго')
