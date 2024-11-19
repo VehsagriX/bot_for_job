@@ -8,7 +8,7 @@ from aiogram.fsm.context import FSMContext
 
 
 from bot_states import Request
-from crud_request_file import add_request, change_value_request
+from crud_request_file import add_request
 from send_message_in_group import get_message_request_in_group
 from handlers.command_handlers import handle_run
 
@@ -24,7 +24,7 @@ router = Router()
 @router.message(F.text.lower() == 'запрос')
 @router.message(F.text.lower() == 'инцидент')
 @flags.chat_action(ChatAction.TYPING)
-async def handle_button(message: Message, state: FSMContext):
+async def handle_button(message: Message, state: FSMContext)-> None:
     await state.update_data(request_type=message.text)
     my_data = datetime.now()
     result = f'{my_data.day}{my_data.month}{my_data.year}{my_data.hour}{my_data.minute}'
@@ -37,7 +37,7 @@ async def handle_button(message: Message, state: FSMContext):
 
 @router.message(F.text, Request.request_title)
 @flags.chat_action(ChatAction.TYPING)
-async def handler_title(message: Message, state: FSMContext):
+async def handler_title(message: Message, state: FSMContext)-> None:
     await state.update_data(request_title=message.text)
     await message.answer("Теперь опишите полностью о своей проблеме, если не можете описать или есть фото, видео,"
                          "прикрепите к сообщению")
@@ -46,7 +46,7 @@ async def handler_title(message: Message, state: FSMContext):
 
 @router.message(F.text, Request.request_description)
 @flags.chat_action(ChatAction.TYPING)
-async def handler_description(message: Message, state: FSMContext):
+async def handler_description(message: Message, state: FSMContext)-> None:
     if len(message.text) < 20:
         await message.answer('Этого недостаточно, попробуйте описать более развернуто')
         await state.set_state(Request.request_description)

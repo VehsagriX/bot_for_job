@@ -30,7 +30,7 @@ async def answer_edit_value(message: Message, state: FSMContext):
 
 
 @router.message(F.text, EditState.edit_value_email)
-async def get_edit_value(message: Message, state: FSMContext):
+async def get_edit_value(message: Message, state: FSMContext)-> None:
     if len(message.text.split()) == 1 and check_email(message.text):
         await state.update_data(edit_value_email=message.text)
         data = await state.get_data()
@@ -51,7 +51,7 @@ async def get_edit_value(message: Message, state: FSMContext):
 
 
 @router.message(F.text, EditState.edit_value_phone)
-async def get_edit_value(message: Message, state: FSMContext):
+async def get_edit_value(message: Message, state: FSMContext)-> None:
     if len(message.text.split()) == 1 and check_num(message.text):
         await state.update_data(edit_value_phone=message.text)
         data = await state.get_data()
@@ -74,7 +74,7 @@ async def get_edit_value(message: Message, state: FSMContext):
 
 @router.message(EditState.edit_state)
 @router.message(F.text)
-async def answer_edit_wrong_value(message: Message, state: FSMContext):
+async def answer_edit_wrong_value(message: Message, state: FSMContext)-> None:
     await message.answer('Вы ошиблись, повторите пожалуйста, можете воспользоваться кнопками ⬇️')
     await state.clear()
     await change_profile(message, state)

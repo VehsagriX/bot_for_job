@@ -20,7 +20,7 @@ router = Router()
 
 @router.message(F.text, CommandStart())
 @flags.chat_action(ChatAction.TYPING)
-async def handle_start_subscribed(message: Message, state: FSMContext):
+async def handle_start_subscribed(message: Message, state: FSMContext)-> None:
     is_member = await is_user_subscribed(message.from_user.id)
 
     if is_member:
@@ -55,13 +55,13 @@ async def handle_start_subscribed(message: Message, state: FSMContext):
 @router.message(F.text, Command('get_started'))
 @router.message(F.text.lower() == "начать работу 💼")
 @router.message(F.text.lower() == "начать работу")
-async def handle_run(message: Message):
+async def handle_run(message: Message)-> None:
     await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step())
 
 
 @router.message(F.text.lower() == 'создать заявку ✍️')
 @router.message(F.text.lower() == 'создать заявку')
-async def on_startup(message: Message, state: FSMContext):
+async def on_startup(message: Message, state: FSMContext)-> None:
     await message.answer('Запрос - приобретение что то нового\nИнцедент - исправление чего-либо⬇️',
                          reply_markup=keyboard_builder())
     await state.set_state(Request.request_type)
@@ -90,7 +90,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(Command('/myprofile'))
 @router.message(F.text.lower() == "моя анкета 📝")
 @router.message(F.text.lower() == "моя анкета")
-async def view_profile(message: Message):
+async def view_profile(message: Message)-> None:
     name, last_name, phone, email, company, departament = get_user_data(message.from_user.id)
     my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}\nКомпания: {company}\nОтдел: {departament}'
     await message.answer(text=my_text, reply_markup=edit_kb())
@@ -99,14 +99,14 @@ async def view_profile(message: Message):
 
 @router.message(F.text == 'Изменить данные')
 @router.message(F.text == 'изменить данные')
-async def change_profile(message: Message, state: FSMContext):
+async def change_profile(message: Message, state: FSMContext)-> None:
     await message.answer('Выберите какие данные будете изменять⬇️', reply_markup=edit_key_kb())
     await state.set_state(EditState.edit_state)
 
 
 @router.message(F.text == 'Мои заявки в работе ⏳')
 @router.message(F.text.lower() == 'Мои заявки в работе ⏳')
-async def show_all_request(message: Message):
+async def show_all_request(message: Message)-> None:
     user_id = message.from_user.id
     result = show_all_requests(user_id)
     if len(result) > 0:
@@ -117,14 +117,14 @@ async def show_all_request(message: Message):
 
 @router.message(F.text.lower() == 'назад ◀️',EditState.edit_state)
 @router.message(F.text.lower() == 'назад ◀️', StateFilter(default_state))
-async def get_back(message: Message, state: FSMContext):
+async def get_back(message: Message, state: FSMContext)-> None:
     await state.clear()
     await handle_run(message)
 
 
 
 @router.message(Command('help'))
-async def handle_help(message: Message):
+async def handle_help(message: Message)-> None:
     text = """Данный бот предназначен для улучшения качества связи и взаимодействия с KOINOT INNOVATION AND TECHNOLOGY.
 Возможности бота: 
 ✅	создать заявку;
@@ -137,6 +137,6 @@ async def handle_help(message: Message):
 
 
 @router.message(F.text, StateFilter(default_state))
-async def cancel_message(message: Message):
+async def cancel_message(message: Message)-> None:
     await message.answer('Изините но с вами я не буду работать')
     await message.answer('Всего доброго')
