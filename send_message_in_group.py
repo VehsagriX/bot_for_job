@@ -5,10 +5,12 @@ from crud_user_file import get_user_name
 from inline_keyboard import inline_request_kb
 
 
-async def is_user_subscribed(user_id, channel_id: str = CHANNEL_ID_USER) -> bool:
+async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_ID_USER, channel_admin_id: str = CHANNEL_ID_ADMIN) -> bool:
     from main import bot
-    member = await bot.get_chat_member(chat_id=channel_id, user_id=user_id)
-    if member.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
+    member_user = await bot.get_chat_member(chat_id=channel_user_id, user_id=user_id)
+    member_admin = await bot.get_chat_member(chat_id=channel_admin_id, user_id=user_id)
+    # Cделать админ панель, из этого
+    if member_user.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
         return False
     return True
 

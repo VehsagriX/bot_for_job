@@ -46,10 +46,6 @@ async def callback_failed(call: CallbackQuery):
     status_value = text[-1][1]
     change_value_request(request_id, key_status, status_value)
 
-    # нужно изменить данные в файле по ключу TODO
-    text = [':'.join(x) for x in text]
-    result = '\n'.join(text)
-    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result, reply_markup=inline_request_kb())
 
 
 @router.callback_query(F.data == 'finished')
