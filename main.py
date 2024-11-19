@@ -2,20 +2,24 @@ import asyncio
 import logging
 from aiogram import Bot
 from aiogram import Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+
 from config import settings
 from aiogram.fsm.storage.memory import MemoryStorage
 from handlers import command_handlers, request_handler, registration_handlers, callback_handler, edit_profile
 from aiogram.utils.chat_action import ChatActionMiddleware
 
+from middleware import ChatTypeMiddleware
 
-bot = Bot(token=settings.bot_token.get_secret_value())
-# bot = Bot(token='7581204077:AAHUoTncBRIybjH86floBZncp-ixg9YvtSY')
+bot = Bot(token=settings.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
 
 
 
 async def main():
     dp = Dispatcher(bot=bot, storage=MemoryStorage())
-
+    dp.message.outer_middleware(ChatTypeMiddleware())
     dp.message.middleware(ChatActionMiddleware())
 
     dp.include_routers(command_handlers.router,

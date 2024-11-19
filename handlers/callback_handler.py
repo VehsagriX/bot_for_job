@@ -37,7 +37,7 @@ async def callback_failed(call: CallbackQuery):
     text = call.message.text.split('\n')
     text = [x.split(':') for x in text]
     request_id = text[1][1].strip()
-    text[-2][1] = 'Никто'
+    text[-2][1] = 'В ожидании'
     edit_key = 'request_admin'
     edit_value = text[-2][1]
     change_value_request(request_id, edit_key, edit_value)

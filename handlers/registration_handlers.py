@@ -3,6 +3,7 @@ from aiogram import Router, F, flags
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
+from aiogram.utils.formatting import Bold
 
 from crud_user_file import add_user
 from bot_states import User
@@ -68,7 +69,7 @@ async def email_check(message: Message, state: FSMContext)-> None:
 
 @router.message(F.text, User.company_name)
 async def get_company_name(message: Message, state: FSMContext)-> None:
-    await state.update_data(company_name=message.text)
+    await state.update_data(company_name=f'<b>{message.text}</b>')
     await message.answer('Из какого вы отдела?')
     await state.set_state(User.department)
 
