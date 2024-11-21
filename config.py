@@ -3,6 +3,20 @@ from pydantic import SecretStr
 
 CHANNEL_ID_ADMIN = '-4555803331'
 CHANNEL_ID_USER = '-4546613771'
+all_company = [
+    'KOINOTI NAV',
+    'EVOLET',
+    'ТаджМоторс',
+    'JAC',
+    'Chery',
+    'BYD',
+    'Ёвар',
+    'Хонаи Ман',
+    'АРВИС',
+    'Мармари',
+    'Авесто Групп',
+    'ATS',
+]
 
 class Settings(BaseSettings):
     bot_token: SecretStr

@@ -1,6 +1,8 @@
 from aiogram import types
-from aiogram.types import InlineKeyboardMarkup
+
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+
+from config import all_company
 
 
 def kb_get_started() -> types.ReplyKeyboardMarkup:
@@ -25,12 +27,15 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     kb_builder.button(text='Моя анкета 📝'),
     kb_builder.button(text='Мои заявки в работе ⏳'),
     kb_builder.button(text='Отмена 🔚')
-    kb_builder.adjust(2,1,1)
+    # if :
+    #     kb_list.append([KeyboardButton(text="⚙️ Админ панель")])
+    # Это для админ панели
+    kb_builder.adjust(2, 1, 1)
 
     return kb_builder.as_markup(resize_keyboard=True)
 
 
-def keyboard_builder() -> types.ReplyKeyboardMarkup:
+def keyboard_builder(its_admin: bool) -> types.ReplyKeyboardMarkup:
     kb = [
         [
             types.KeyboardButton(text="Запрос"),
@@ -100,4 +105,11 @@ def edit_key_kb() -> types.ReplyKeyboardMarkup:
     return keyboard
 
 
-
+# def kb_company(list_company=all_company) -> types.ReplyKeyboardMarkup:
+#     # list_company = ['ГО', 'Evolet']
+#     builder = ReplyKeyboardBuilder()
+#     for i in range(len(list_company)):
+#         builder.add(types.KeyboardButton(text=str(i+1)))
+#     builder.adjust(5)
+#
+#     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True, input_field_placeholder="Выберите что вам нужно")
