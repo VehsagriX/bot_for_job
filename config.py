@@ -3,6 +3,9 @@ from pydantic import SecretStr
 
 CHANNEL_ID_ADMIN = '-4555803331'
 CHANNEL_ID_USER = '-4546613771'
+CHANNEL_TEST_ADMIN = '-4578540724'
+CHANNEL_TEST_USER = '-4528923908'
+
 all_company = [
     'KOINOTI NAV',
     'EVOLET',

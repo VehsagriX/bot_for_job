@@ -1,11 +1,11 @@
 from aiogram.enums import ChatMemberStatus
 
-from config import CHANNEL_ID_ADMIN, CHANNEL_ID_USER
+from config import CHANNEL_ID_ADMIN, CHANNEL_ID_USER, CHANNEL_TEST_USER, CHANNEL_TEST_ADMIN
 from crud_user_file import get_user_name
 from inline_keyboard import inline_request_kb
 
 
-async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_ID_USER, channel_admin_id: str = CHANNEL_ID_ADMIN) -> bool:
+async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_TEST_USER, channel_admin_id: str = CHANNEL_TEST_ADMIN) -> bool:
     from main import bot
     member_user = await bot.get_chat_member(chat_id=channel_user_id, user_id=user_id)
     member_admin = await bot.get_chat_member(chat_id=channel_admin_id, user_id=user_id)
@@ -15,13 +15,13 @@ async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_ID_USER, ch
     return True
 
 
-async def get_message_user_in_group(result: dict, channel_id: str = CHANNEL_ID_USER) -> None:
+async def get_message_user_in_group(result: dict, channel_id: str = CHANNEL_TEST_USER) -> None:
     from main import bot
     my_text = f"Имя: {result.get('user_name')}\nФамилия: {result.get('user_last_name')}\nПочта: {result.get('user_email')}\nНомер: {result.get('user_phone')}"
     await bot.send_message(chat_id=channel_id, text=my_text)
 
 
-async def get_message_request_in_group(result: dict | str, user_id: int, channel_id: str = CHANNEL_ID_ADMIN) -> None:
+async def get_message_request_in_group(result: dict | str, user_id: int, channel_id: str = CHANNEL_TEST_ADMIN) -> None:
     from main import bot
     name, last_name, company = get_user_name(user_id)
 

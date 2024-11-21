@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
-from config import CHANNEL_ID_ADMIN
+from config import CHANNEL_TEST_ADMIN
 from crud_request_file import change_value_request
 from inline_keyboard import inline_request_chat_admin, inline_request_kb
 
@@ -51,7 +51,7 @@ async def callback_failed(call: CallbackQuery):
     result = '\n'.join(text)
     print(result)
     await call.message.edit_text(text=result)
-    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result, reply_markup=inline_request_kb())
+    await call.bot.send_message(chat_id=CHANNEL_TEST_ADMIN, text=result, reply_markup=inline_request_kb())
 
 @router.callback_query(F.data == 'finished')
 async def callback_finished(call: CallbackQuery):
@@ -74,4 +74,4 @@ async def callback_finished(call: CallbackQuery):
 
     await call.bot.send_message(chat_id=user_id, text=result + '‼️‼️‼️')
     await call.message.edit_text(result + '‼️‼️‼️')
-    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result + '‼️‼️‼️')
+    await call.bot.send_message(chat_id=CHANNEL_TEST_ADMIN, text=result + '‼️‼️‼️')
