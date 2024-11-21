@@ -23,7 +23,7 @@ async def callback_accept(call: CallbackQuery):
     key_status = 'request_status'
     status_value = text[-1][1]
     change_value_request(request_id, key_status, status_value)
-    # нужно изменить данные в файле по ключу TODO
+
     id_user = [x for x in text if 'ID Создателя' in x][0][1].strip()
     text = [':'.join(x) for x in text]
     result = '\n'.join(text)

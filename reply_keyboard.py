@@ -35,7 +35,7 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     return kb_builder.as_markup(resize_keyboard=True)
 
 
-def keyboard_builder(its_admin: bool) -> types.ReplyKeyboardMarkup:
+def keyboard_builder() -> types.ReplyKeyboardMarkup:
     kb = [
         [
             types.KeyboardButton(text="Запрос"),
