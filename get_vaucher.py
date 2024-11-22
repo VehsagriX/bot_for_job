@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
-VOUCHERS_PATH = '/content/Vouchers.xlsx'
+VOUCHERS_PATH = 'Vouchers.xlsx'
 
 
 def get_voucher(user_id, user_name):

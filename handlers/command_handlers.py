@@ -29,7 +29,7 @@ async def handle_start_subscribed(message: Message, state: FSMContext) -> None:
             await state.set_state(User.user_login)
             await state.set_state(User.chat_id)
             content = Text(
-                "Hello ",
+                "Приветствую ",
                 Bold(message.from_user.full_name)
             )
             await state.clear()
@@ -121,7 +121,8 @@ async def show_all_request(message: Message) -> None:
 @router.message(F.text == 'Доступ к Гостевому WIFI🛜', StateFilter(default_state))
 @router.message(F.text.lower() == 'доступ к гостевому wifi🛜', StateFilter(default_state))
 async def send_voucher(message: Message):
-    if message.from_user.id in users_for_voucher:
+    print(type(message.from_user.id))
+    if str(message.from_user.id) in users_for_voucher:
         result = get_voucher(message.from_user.id, message.from_user.username)
         await message.answer(f'{result}')
     else:
@@ -155,5 +156,4 @@ async def handle_help(message: Message) -> None:
 
 @router.message(F.text, StateFilter(default_state))
 async def cancel_message(message: Message) -> None:
-    await message.answer(
-        """Прошу прощения, по причине того, что вы отсутствуете в списке зарегистрированных пользователей, я не могу вам помочь. До свидания.""")
+    await message.answer("""Прошу прощения, по причине того, что вы отсутствуете в списке зарегистрированных пользователей, я не могу вам помочь. До свидания.""")

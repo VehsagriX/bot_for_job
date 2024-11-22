@@ -37,7 +37,10 @@ all_company = [
     'NEO UNIVERSE',
 ]
 
-users_for_voucher = []
+users_for_voucher = [
+    '6972606957',
+
+]
 
 
 class Settings(BaseSettings):
