@@ -37,6 +37,8 @@ all_company = [
     'NEO UNIVERSE',
 ]
 
+users_for_voucher = []
+
 
 class Settings(BaseSettings):
     bot_token: SecretStr

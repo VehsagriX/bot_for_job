@@ -14,6 +14,8 @@ async def callback_accept(call: CallbackQuery):
     text = [x.split(':') for x in text]
 
     request_id = text[1][1].strip()
+    print(request_id)
+    print(type(request_id))
 
     text[-2][1] = '@' + call.from_user.username
     edit_key = 'request_admin'
@@ -22,6 +24,8 @@ async def callback_accept(call: CallbackQuery):
     text[-1][1] = 'В работе'
     key_status = 'request_status'
     status_value = text[-1][1]
+    print(text)
+    # print(status_value)
     change_value_request(request_id, key_status, status_value)
 
     id_user = [x for x in text if 'ID Создателя' in x][0][1].strip()
@@ -37,20 +41,23 @@ async def callback_accept(call: CallbackQuery):
 async def callback_failed(call: CallbackQuery):
     text = call.message.text.split('\n')
     text = [x.split(':') for x in text]
+    print(text)
     request_id = text[1][1].strip()
     text[-2][1] = 'В ожидании'
     edit_key = 'request_admin'
     edit_value = text[-2][1]
+    print(edit_value)
     change_value_request(request_id, edit_key, edit_value)
     text[-1][1] = 'Новый'
     key_status = 'request_status'
     status_value = text[-1][1]
+    print(status_value)
     change_value_request(request_id, key_status, status_value)
 
     text = [':'.join(x) for x in text]
     result = '\n'.join(text)
-    print(result)
-    await call.message.edit_text(text=result)
+    # print(result)
+    # await call.message.edit_text(text=result)
     await call.bot.send_message(chat_id=CHANNEL_TEST_ADMIN, text=result, reply_markup=inline_request_kb())
 
 @router.callback_query(F.data == 'finished')

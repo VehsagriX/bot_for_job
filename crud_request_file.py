@@ -21,9 +21,9 @@ def get_request_table() -> pd.DataFrame:
     return df
 
 
-def get_all_requests(user_id: int, some_value: str = 'В работе'):
+def get_all_requests(user_id: int, some_value: str = 'В работе', status_new: str = 'В ожидании'):
     requests = get_request_table()
-    requests = requests.query(f"request_status == '{some_value}' and request_creator == {str(user_id)}")
+    requests = requests.query(f"request_status == {some_value} and request_status == {status_new} and request_creator == {str(user_id)}")
 
     return requests.values
 
@@ -36,7 +36,9 @@ def get_request_by_id(request_id: int):
 
 def change_value_request(request_id: int | str, edit_key, value) -> None:
     requests = get_request_table()
-    requests.loc[requests['request_id'] == str(request_id), edit_key] = value
+
+    print('Меняем значение')
+    requests.loc[requests['request_id'] == request_id, edit_key] = value
 
     requests.to_excel('request_file.xlsx', index=False)
 

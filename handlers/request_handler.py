@@ -21,10 +21,10 @@ async def handle_button(message: Message, state: FSMContext) -> None:
     await state.update_data(request_type=message.text)
     my_data = datetime.now()
     result = f'{my_data.day}{my_data.month}{my_data.year}{my_data.hour}{my_data.minute}'
-    await state.update_data(request_id=f'<b>{result}{message.from_user.id}</b>')
+    await state.update_data(request_id=f'{result}{message.from_user.id}')
     await state.update_data(request_creator=message.from_user.id)
     await state.update_data(login_creator=message.from_user.username)
-    await message.answer('Напишите коротко о вашей проблеме. Пример(Заправка картриджа, Установка windows...)')
+    await message.answer('Напишите коротко о вашей проблеме. Пример (Заправка картриджа, Установка windows и т.п.).')
     await state.set_state(Request.request_title)
 
 
@@ -44,14 +44,14 @@ async def handler_title(message: Message, state: FSMContext) -> None:
 @flags.chat_action(ChatAction.TYPING)
 async def handler_description(message: Message, state: FSMContext) -> None:
     if len(message.text) < 20:
-        await message.answer('Этого недостаточно, попробуйте описать более развернуто')
+        await message.answer('Этого недостаточно, попробуйте описать более подробно.')
         await state.set_state(Request.request_description)
     else:
         await state.set_state(Request.request_admin)
         await state.update_data(request_description=message.text)
         await state.update_data(request_admin='В ожидании')
         await state.update_data(request_status='Новый')
-        await message.reply('Спасибо, я передам всю информацию специалистам')
+        await message.reply('Спасибо, ваша информация передана в ГПП.')
         await handle_run(message)
         data = await state.get_data()
 

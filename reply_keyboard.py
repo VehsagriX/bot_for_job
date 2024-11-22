@@ -26,11 +26,12 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     kb_builder.button(text='Создать заявку ✍️'),
     kb_builder.button(text='Моя анкета 📝'),
     kb_builder.button(text='Мои заявки в работе ⏳'),
+    kb_builder.button(text='Доступ к Гостевому WIFI🛜')
     kb_builder.button(text='Отмена 🔚')
     # if :
     #     kb_list.append([KeyboardButton(text="⚙️ Админ панель")])
     # Это для админ панели
-    kb_builder.adjust(2, 1, 1)
+    kb_builder.adjust(2, 1, 1, 1)
 
     return kb_builder.as_markup(resize_keyboard=True)
 
