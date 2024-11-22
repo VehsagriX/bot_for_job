@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
 
-from config import users_for_voucher
+from config import users_for_voucher, CHANNEL_ID_ADMIN
 from crud_request_file import show_all_requests
 from crud_user_file import is_registered, get_user_data
 from get_vaucher import get_voucher
@@ -57,7 +57,8 @@ async def handle_start_subscribed(message: Message, state: FSMContext) -> None:
 @router.message(F.text.lower() == "начать работу 💼")
 @router.message(F.text.lower() == "начать работу")
 async def handle_run(message: Message) -> None:
-    await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step())
+
+    await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step(message.from_user.id))
 
 
 @router.message(F.text.lower() == 'создать заявку ✍️')

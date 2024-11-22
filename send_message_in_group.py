@@ -4,6 +4,14 @@ from config import CHANNEL_ID_ADMIN, CHANNEL_ID_USER, CHANNEL_TEST_USER, CHANNEL
 from crud_user_file import get_user_name
 from inline_keyboard import inline_request_kb
 
+async def is_admin(user_id, channel_admin: str = CHANNEL_TEST_ADMIN):
+    from main import bot
+    user_channel_status = await bot.get_chat_member(chat_id=channel_admin, user_id=user_id)
+    if user_channel_status["status"] != 'left':
+        return True
+
+
+
 
 async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_TEST_USER, channel_admin_id: str = CHANNEL_TEST_ADMIN) -> bool:
     from main import bot

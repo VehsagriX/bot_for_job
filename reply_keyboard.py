@@ -1,8 +1,10 @@
 from aiogram import types
+from aiogram.types import KeyboardButton
 
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
-from config import all_company
+from config import all_company, CHANNEL_ID_ADMIN
+from send_message_in_group import is_admin
 
 
 def kb_get_started() -> types.ReplyKeyboardMarkup:
@@ -20,7 +22,7 @@ def kb_get_started() -> types.ReplyKeyboardMarkup:
     return keyboard
 
 
-def kb_run_step() -> types.ReplyKeyboardMarkup:
+def kb_run_step(user_id) -> types.ReplyKeyboardMarkup:
     kb_builder = ReplyKeyboardBuilder()
 
     kb_builder.button(text='Создать заявку ✍️'),
@@ -28,8 +30,10 @@ def kb_run_step() -> types.ReplyKeyboardMarkup:
     kb_builder.button(text='Мои заявки в работе ⏳'),
     kb_builder.button(text='Доступ к Гостевому WIFI🛜')
     kb_builder.button(text='Отмена 🔚')
-    # if :
-    #     kb_list.append([KeyboardButton(text="⚙️ Админ панель")])
+    if is_admin(user_id):
+        kb_builder.add(KeyboardButton(text="⚙️ Админ панель"))
+        kb_builder.adjust(2,1,1,2)
+        return kb_builder.as_markup(resize_keyboard=True)
     # Это для админ панели
     kb_builder.adjust(2, 1, 1, 1)
 
