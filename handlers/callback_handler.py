@@ -14,8 +14,7 @@ async def callback_accept(call: CallbackQuery):
     text = [x.split(':') for x in text]
 
     request_id = text[1][1].strip()
-    print(request_id)
-    print(type(request_id))
+
 
     text[-2][1] = '@' + call.from_user.username
     edit_key = 'request_admin'
@@ -24,8 +23,7 @@ async def callback_accept(call: CallbackQuery):
     text[-1][1] = 'В работе'
     key_status = 'request_status'
     status_value = text[-1][1]
-    print(text)
-    # print(status_value)
+
     change_value_request(request_id, key_status, status_value)
 
     id_user = [x for x in text if 'ID Создателя' in x][0][1].strip()
@@ -46,12 +44,12 @@ async def callback_failed(call: CallbackQuery):
     text[-2][1] = 'В ожидании'
     edit_key = 'request_admin'
     edit_value = text[-2][1]
-    print(edit_value)
+
     change_value_request(request_id, edit_key, edit_value)
     text[-1][1] = 'Новый'
     key_status = 'request_status'
     status_value = text[-1][1]
-    print(status_value)
+
     change_value_request(request_id, key_status, status_value)
 
     text = [':'.join(x) for x in text]
@@ -64,17 +62,16 @@ async def callback_failed(call: CallbackQuery):
 async def callback_finished(call: CallbackQuery):
     text = call.message.text.split('\n')
     text = [x.split(':') for x in text]
-    # print(text)
+
     user_id = text[6][1].strip()
-    # print(user_id)
-    # print(call.message.chat.id)
+
     text[-1][1] = "Выполнено"
-    # исправить работу после завершения
+
     request_id = text[1][1].strip()
-    # print(request_id)
+
     status_key = 'request_status'
     status_value = text[-1][1]
-    # print(status_value)
+
     change_value_request(request_id, status_key, status_value)
     result = [':'.join(x) for x in text]
     result = '\n'.join(result)

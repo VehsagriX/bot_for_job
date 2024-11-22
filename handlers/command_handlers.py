@@ -121,7 +121,6 @@ async def show_all_request(message: Message) -> None:
 @router.message(F.text == 'Доступ к Гостевому WIFI🛜', StateFilter(default_state))
 @router.message(F.text.lower() == 'доступ к гостевому wifi🛜', StateFilter(default_state))
 async def send_voucher(message: Message):
-    print(type(message.from_user.id))
     if str(message.from_user.id) in users_for_voucher:
         result = get_voucher(message.from_user.id, message.from_user.username)
         await message.answer(f'{result}')
