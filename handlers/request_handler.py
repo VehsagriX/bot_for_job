@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from aiogram import Router, F, flags
+from aiogram.fsm.state import StatesGroup
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
@@ -54,15 +55,14 @@ async def handler_description(message: Message, state: FSMContext) -> None:
         await message.reply('Спасибо, ваша информация передана в ГПП.')
         await handle_run(message)
         data = await state.get_data()
-
+        await state.clear()
         add_request(data)
         user_id = message.from_user.id
         await get_message_request_in_group(data, user_id)
 
 
+
 @router.message(F.text, Request())
-
-
 async def error_message(message: Message):
     await message.answer('Я не понимаю, выберите то, что нужно ⬇️')
     await handle_run(message)

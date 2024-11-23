@@ -10,10 +10,11 @@ from config import users_for_voucher, CHANNEL_ID_ADMIN
 from crud_request_file import show_all_requests
 from crud_user_file import is_registered, get_user_data
 from get_vaucher import get_voucher
-from reply_keyboard import keyboard_answer, kb_run_step, kb_get_started, edit_kb, keyboard_builder, edit_key_kb
+from reply_keyboard import keyboard_answer, kb_get_started, edit_kb, keyboard_builder, edit_key_kb, \
+    kb_run_step_user, kb_run_step_admin
 
 from bot_states import User, Request, EditState
-from send_message_in_group import is_user_subscribed
+from send_message_in_group import is_user_subscribed, is_admin
 
 router = Router()
 
@@ -57,8 +58,11 @@ async def handle_start_subscribed(message: Message, state: FSMContext) -> None:
 @router.message(F.text.lower() == "начать работу 💼")
 @router.message(F.text.lower() == "начать работу")
 async def handle_run(message: Message) -> None:
-
-    await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step(message.from_user.id))
+    admin = await is_admin(message.from_user.id)
+    if not admin:
+        await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step_user())
+    else:
+        await message.answer('Выберите то, что вам необходимо ⬇️', reply_markup=kb_run_step_admin())
 
 
 @router.message(F.text.lower() == 'создать заявку ✍️')

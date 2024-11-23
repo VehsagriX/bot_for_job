@@ -39,7 +39,7 @@ all_company = [
 
 users_for_voucher = [
     '6972606957',
-
+    '283943400',
 ]
 
 

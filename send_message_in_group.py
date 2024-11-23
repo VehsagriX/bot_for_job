@@ -7,8 +7,11 @@ from inline_keyboard import inline_request_kb
 async def is_admin(user_id, channel_admin: str = CHANNEL_TEST_ADMIN):
     from main import bot
     user_channel_status = await bot.get_chat_member(chat_id=channel_admin, user_id=user_id)
-    if user_channel_status["status"] != 'left':
-        return True
+    print(user_channel_status)
+    print(type(user_channel_status))
+    if user_channel_status.status == ChatMemberStatus.LEFT:
+        return False
+    return True
 
 
 
@@ -18,9 +21,9 @@ async def is_user_subscribed(user_id, channel_user_id: str = CHANNEL_TEST_USER, 
     member_user = await bot.get_chat_member(chat_id=channel_user_id, user_id=user_id)
     member_admin = await bot.get_chat_member(chat_id=channel_admin_id, user_id=user_id)
 
-    if member_user.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR] or member_admin.status not in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
-        return False
-    return True
+    if member_user.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR] or member_admin.status in [ChatMemberStatus.MEMBER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.CREATOR]:
+        return True
+    return False
 
 
 async def get_message_user_in_group(result: dict, channel_id: str = CHANNEL_TEST_USER) -> None:
