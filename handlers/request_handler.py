@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from aiogram import Router, F, flags
-from aiogram.fsm.state import StatesGroup
+
 from aiogram.types import Message
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
@@ -19,6 +19,13 @@ router = Router()
 @router.message(F.text.lower() == 'инцидент')
 @flags.chat_action(ChatAction.TYPING)
 async def handle_button(message: Message, state: FSMContext) -> None:
+    """
+    Фун-ция получает значение нажатой кнопк, присваивает в request_type значение заявки, отправляет сообщение для получения значения
+    в request_title
+    :param message: Message которым мы отправляем и получаем сообщение
+    :param state: FSM контроль пошагового действия
+    :return: None
+    """
     await state.update_data(request_type=message.text)
     my_data = datetime.now()
     result = f'{my_data.day}{my_data.month}{my_data.year}{my_data.hour}{my_data.minute}'
@@ -39,6 +46,12 @@ async def handle_button(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text.lower() == 'назад ◀️', Request())
 async def get_back(message: Message, state: FSMContext) -> None:
+    """
+    Фун-ция для неверных данных в Request-state
+    :param message: Message получение и отправка сообщения
+    :param state: FSM контроль пошагового действия
+    :return:
+    """
     await state.clear()
     await message.answer('Попробуйте заново.')
 
@@ -48,6 +61,12 @@ async def get_back(message: Message, state: FSMContext) -> None:
 @router.message(F.text, Request.request_title)
 @flags.chat_action(ChatAction.TYPING)
 async def handler_title(message: Message, state: FSMContext) -> None:
+    """
+    Функция для получения значения в request_title, отправляет сообщение для получения значения request_description
+    :param message: Message получение и отправка сообщения
+    :param state: FSM контроль пошагового действия
+    :return: None
+    """
     await state.update_data(request_title=message.text)
     await message.answer("""Пожалуйста, опишите вашу проблему как можно подробнее. 
 Если у вас есть визуальные материалы (фотографии или видео), которые помогут лучше понять ситуацию, вы сможете 
@@ -60,6 +79,13 @@ async def handler_title(message: Message, state: FSMContext) -> None:
 @router.message(F.text, Request.request_description)
 @flags.chat_action(ChatAction.TYPING)
 async def handler_description(message: Message, state: FSMContext) -> None:
+    """
+    Фунция проверяет введенные данные на достаточное кол-во длинны, получает данные в data: dict, обнуляет Request-state,
+    отправляет данные в функцию add_request(data) для записи в БД
+    :param message: Message получение и отправка сообщения
+    :param state: FSM контроль пошагового действия
+    :return:
+    """
     if len(message.text) < 20:
         await message.answer('Этого недостаточно, попробуйте описать более подробно.')
         await state.set_state(Request.request_description)
@@ -80,5 +106,10 @@ async def handler_description(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text, Request())
 async def error_message(message: Message):
+    """
+    Ошибочный ввод данных в любом шаге Request-state
+    :param message: Message получение и отправка сообщения
+    :return:
+    """
     await message.answer('Я не понимаю, выберите то, что нужно ⬇️')
     await handle_run(message)
