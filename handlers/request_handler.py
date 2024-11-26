@@ -25,8 +25,16 @@ async def handle_button(message: Message, state: FSMContext) -> None:
     await state.update_data(request_id=f'{result}{message.from_user.id}')
     await state.update_data(request_creator=message.from_user.id)
     await state.update_data(login_creator=message.from_user.username)
-    await message.answer('Напишите коротко о вашей проблеме. Пример (Заправка картриджа, Установка windows и т.п.).')
-    await state.set_state(Request.request_title)
+    if message.text.lower() == 'инцидент':
+        await message.answer('Напишите коротко о вашей проблеме. Пример: Заправка картриджа, Установка windows или другого ПО, перенос данных и т.п.')
+        await state.set_state(Request.request_title)
+    elif message.text.lower() == 'запрос':
+        await message.answer('Напишите коротко о вашем запросе. Пример: закуп ноутбука, новое подключение к сети интернет, либо к локальной сети, закуп принтера и т.п.')
+        await state.set_state(Request.request_title)
+    else:
+        await message.answer('Я вас не понимаю, повторите попытку')
+        await state.set_state(Request.request_type)
+        return
 
 
 @router.message(F.text.lower() == 'назад ◀️', Request())

@@ -47,7 +47,7 @@ async def handle_start_subscribed(message: Message, state: FSMContext) -> None:
             await state.set_state(User.user_last_name)
         else:
             await message.answer(
-                'Добрый день, я помощник Группы Поддержки Пользователей ДИТ ЗАО «КОИНОТИ НАВ». Выберите, что вы хотели бы сделать ⬇️',
+                'Добрый день, я помощник Группы Поддержки Пользователей Департамента Информационных Технологий ЗАО «КОИНОТИ НАВ». Выберите, что вы хотели бы сделать ⬇️',
                 reply_markup=kb_get_started())
 
     else:
@@ -69,7 +69,7 @@ async def handle_run(message: Message) -> None:
 @router.message(F.text.lower() == 'создать заявку')
 async def on_startup(message: Message, state: FSMContext) -> None:
     await message.answer(
-        'Запрос - приобретение оборудования, либо выполнение определённых работ.\nИнцидент - исправление проблем в оборудовании или ПО. ⬇️',
+        'Запрос - приобретение ИТ оборудования и ПО, либо выполнение новых определённых ИТ работ.\nИнцидент - исправление проблем в ИТ оборудовании или ПО.',
         reply_markup=keyboard_builder())
     await state.set_state(Request.request_type)
 
