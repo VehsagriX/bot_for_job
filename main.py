@@ -12,7 +12,7 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 
 from middleware import ChatTypeMiddleware
 
-bot = Bot(token=settings.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token=settings.bot_job_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 
 

@@ -21,9 +21,9 @@ def get_request_table() -> pd.DataFrame:
     return df
 
 
-def get_all_requests(user_id: int, some_value: str = 'В работе', status_new: str = 'В ожидании'):
+def get_all_requests(user_id: int, some_value: str = 'Выполнено', status_new: str = 'В ожидании'):
     requests = get_request_table()
-    requests = requests.query(f"request_status == {some_value} and request_status == {status_new} and request_creator == {str(user_id)}")
+    requests = requests.query(f"request_status != '{some_value}' and request_creator == {str(user_id)}")
 
     return requests.values
 
@@ -37,7 +37,7 @@ def get_request_by_id(request_id: int):
 def change_value_request(request_id: int | str, edit_key, value) -> None:
     requests = get_request_table()
 
-    print('Меняем значение')
+
     requests.loc[requests['request_id'] == request_id, edit_key] = value
 
     requests.to_excel('request_file.xlsx', index=False)
@@ -52,7 +52,7 @@ def show_all_requests(user_id):
         my_text = ''
         for j in range(len(result[i])):
             if j == 3:
-                my_text += list_keys[j] + ' ' + '@' + result[i][j] + '\n'
+                my_text += list_keys[j] + ' ' + '@' + str(result[i][j]) + '\n'
             else:
                 my_text += list_keys[j] + ' ' + str(result[i][j]) + '\n'
 

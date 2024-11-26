@@ -29,6 +29,14 @@ async def handle_button(message: Message, state: FSMContext) -> None:
     await state.set_state(Request.request_title)
 
 
+@router.message(F.text.lower() == 'назад ◀️', Request())
+async def get_back(message: Message, state: FSMContext) -> None:
+    await state.clear()
+    await message.answer('Попробуйте заново.')
+
+    await handle_run(message)
+
+
 @router.message(F.text, Request.request_title)
 @flags.chat_action(ChatAction.TYPING)
 async def handler_title(message: Message, state: FSMContext) -> None:

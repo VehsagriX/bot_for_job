@@ -100,7 +100,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 @router.message(F.text.lower() == "моя анкета")
 async def view_profile(message: Message) -> None:
     name, last_name, phone, email, company, departament = get_user_data(message.from_user.id)
-    my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}\nКомпания: {company}\nОтдел: {departament}'
+    my_text = f'Имя: {name}\nФамилия: {last_name}\nТелефон: {phone}\nПочта: {email}\nКомпания: {company}\nДепартамент/Отдел: {departament}'
     await message.answer(text=my_text, reply_markup=edit_kb())
 
 

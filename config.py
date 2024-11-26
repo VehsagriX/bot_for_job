@@ -40,11 +40,14 @@ all_company = [
 users_for_voucher = [
     '6972606957',
     '283943400',
+    '174628526'
 ]
 
 
 class Settings(BaseSettings):
-    bot_token: SecretStr
+    bot_test_token: SecretStr
+    bot_job_token: SecretStr
+    bot_kit_support_token: SecretStr
 
     model_config = SettingsConfigDict(
         case_sensitive=False,
