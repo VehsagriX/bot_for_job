@@ -43,6 +43,9 @@ users_for_voucher = [
     '174628526'
 ]
 
+super_admin = [
+    6972606957,
+]
 
 class Settings(BaseSettings):
     bot_test_token: SecretStr

@@ -7,12 +7,12 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
 from pydantic.v1 import NoneStr
 
-from config import users_for_voucher
+from config import users_for_voucher, super_admin
 from crud_request_file import show_all_requests
 from crud_user_file import is_registered, get_user_data
 from get_vaucher import get_voucher
 from reply_keyboard import keyboard_answer, kb_get_started, edit_kb, keyboard_builder, edit_key_kb, \
-    kb_run_step_user, kb_run_step_admin, kb_admin
+    kb_run_step_user, kb_run_step_admin, kb_admin, kb_super_admin
 
 from bot_states import User, Request, EditState, AdminState
 from send_message_in_group import is_user_subscribed, is_admin
@@ -111,7 +111,10 @@ async def get_back(message: Message, state: FSMContext):
 @router.message(F.text == '⚙️ Админ панель', default_state)
 async def admin_works(message: Message, state: FSMContext):
     await state.set_state(AdminState.admin_login)
-    await message.answer('Выберите, что вас интересует', reply_markup=kb_admin())
+    if message.from_user.id in super_admin:
+        await message.answer('Выберите, что вас интересует', reply_markup=kb_super_admin())
+    else:
+        await message.answer('Выберите, что вас интересует', reply_markup=kb_admin())
 
 
 

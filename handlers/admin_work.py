@@ -1,7 +1,7 @@
 from aiogram import Router, F
-from aiogram.fsm.state import default_state
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from pyexpat.errors import messages
 
 from bot_states import AdminState
 from crud_request_file import show_all_requests
@@ -42,6 +42,12 @@ async def get_request_status_completed(message: Message, state: FSMContext):
         await message.answer('У вас нет выполненных заявок')
     await state.clear()
     await handle_run(message)
+
+
+
+@router.message(F.text == 'Отчет 📊', AdminState.admin_login)
+async def get_report(message: Message, state: FSMContext):
+    pass
 
 @router.message(F.text == 'Назад ️◀️', AdminState.admin_login)
 async def back_admin(message: Message, state: FSMContext):
