@@ -123,6 +123,13 @@ def edit_key_kb() -> types.ReplyKeyboardMarkup:
         [
             types.KeyboardButton(text='Почта 📧'),
             types.KeyboardButton(text='Номер 📱'),
+
+        ],
+        [
+            types.KeyboardButton(text='Компания'),
+            types.KeyboardButton(text='Департамент / Отдел'),
+        ],
+        [
             types.KeyboardButton(text='Назад ◀️'),
         ]
     ]
