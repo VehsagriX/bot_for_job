@@ -72,8 +72,7 @@ async def get_edit_value(message: Message, state: FSMContext)-> None:
         return
 
 
-@router.message(EditState.edit_state)
-@router.message(F.text)
+@router.message(F.text, EditState.edit_state)
 async def answer_edit_wrong_value(message: Message, state: FSMContext)-> None:
     await message.answer('Вы ошиблись, повторите пожалуйста, можете воспользоваться кнопками ⬇️')
     await state.clear()

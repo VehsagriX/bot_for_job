@@ -11,7 +11,7 @@ class User(StatesGroup):
     user_email = State()
     company_name = State()
     department = State()
-    is_admin = State()
+
 
 class Request(StatesGroup):
     request_type = State()
@@ -30,3 +30,12 @@ class EditState(StatesGroup):
     edit_email = State()
     edit_value_phone = State()
     edit_value_email = State()
+
+class AdminState(StatesGroup):
+    admin_login = State()
+    work_status = State()
+
+
+
+
+

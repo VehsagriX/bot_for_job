@@ -46,6 +46,18 @@ def kb_run_step_admin() -> types.ReplyKeyboardMarkup:
     return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
 
+
+def kb_admin() -> types.ReplyKeyboardMarkup:
+    kb_builder = ReplyKeyboardBuilder()
+    kb_builder.button(text='Мои заявки в исполнении 🧑‍💻')
+    kb_builder.button(text='Мои решенные заявки ✅')
+    kb_builder.button(text='Назад ️◀️')
+    kb_builder.adjust(1,2)
+
+    return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
+
+
+
 def keyboard_builder() -> types.ReplyKeyboardMarkup:
     kb = [
         [

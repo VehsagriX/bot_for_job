@@ -7,12 +7,13 @@ from aiogram.enums import ParseMode
 
 from config import settings
 from aiogram.fsm.storage.memory import MemoryStorage
-from handlers import command_handlers, request_handler, registration_handlers, callback_handler, edit_profile
+from handlers import command_handlers, request_handler, registration_handlers, callback_handler, edit_profile, \
+    admin_work
 from aiogram.utils.chat_action import ChatActionMiddleware
 
 from middleware import ChatTypeMiddleware
 
-bot = Bot(token=settings.bot_job_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token=settings.bot_test_token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 
 
@@ -26,6 +27,7 @@ async def main():
                        request_handler.router,
                        registration_handlers.router,
                        edit_profile.router,
+                       admin_work.router,
                        callback_handler.router)
 
     logging.basicConfig(level=logging.INFO)

@@ -3,9 +3,7 @@ from aiogram import Router, F, flags
 from aiogram.types import Message, CallbackQuery
 from aiogram.enums import ChatAction
 from aiogram.fsm.context import FSMContext
-from aiogram.utils.formatting import Bold
 
-from config import all_company
 from crud_user_file import add_user
 from bot_states import User
 from filters import check_email, check_num
@@ -51,7 +49,7 @@ async def check_phone(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text, User.user_email)
 @flags.chat_action(action=ChatAction.TYPING)
-async def email_check(message: Message, state: FSMContext, list_company=all_company) -> None:
+async def email_check(message: Message, state: FSMContext) -> None:
     msg = message.text.split()
     email = [i for i in msg if check_email(i)]
 
@@ -64,7 +62,6 @@ async def email_check(message: Message, state: FSMContext, list_company=all_comp
         await message.reply("Пожалуйста, введите корректный email.")
         await state.set_state(User.user_email)
         return
-
 
 
 @router.callback_query(F.data, User.company_name)

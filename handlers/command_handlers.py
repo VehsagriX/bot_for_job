@@ -5,15 +5,16 @@ from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
+from pydantic.v1 import NoneStr
 
-from config import users_for_voucher, CHANNEL_ID_ADMIN
+from config import users_for_voucher
 from crud_request_file import show_all_requests
 from crud_user_file import is_registered, get_user_data
 from get_vaucher import get_voucher
 from reply_keyboard import keyboard_answer, kb_get_started, edit_kb, keyboard_builder, edit_key_kb, \
-    kb_run_step_user, kb_run_step_admin
+    kb_run_step_user, kb_run_step_admin, kb_admin
 
-from bot_states import User, Request, EditState
+from bot_states import User, Request, EditState, AdminState
 from send_message_in_group import is_user_subscribed, is_admin
 
 router = Router()
@@ -106,6 +107,14 @@ async def get_back(message: Message, state: FSMContext):
     await handle_run(message)
 
 
+@router.message(F.text.lower() == '⚙️ админ панель', StateFilter(None))
+@router.message(F.text == '⚙️ Админ панель', default_state)
+async def admin_works(message: Message, state: FSMContext):
+    await state.set_state(AdminState.admin_login)
+    await message.answer('Выберите, что вас интересует', reply_markup=kb_admin())
+
+
+
 @router.message(F.text, Command("cancel"))
 @router.message(F.text.lower() == "отмена 🔚")
 @router.message(F.text.lower() == 'отмена')
@@ -180,8 +189,8 @@ async def send_voucher(message: Message):
         await handle_run(message)
 
 
-@router.message(F.text.lower() == 'назад ◀️', EditState.edit_state)
-@router.message(F.text.lower() == 'назад ◀️', StateFilter(default_state))
+@router.message(F.text == 'Назад ◀️')
+@router.message(F.text.lower() == 'назад ◀️')
 async def get_back(message: Message, state: FSMContext) -> None:
     await state.clear()
     await handle_run(message)
