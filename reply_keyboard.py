@@ -1,7 +1,6 @@
 from aiogram import types
-from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from send_message_in_group import is_admin
+
 
 
 def kb_get_started() -> types.ReplyKeyboardMarkup:
@@ -142,11 +141,3 @@ def edit_key_kb() -> types.ReplyKeyboardMarkup:
     )
     return keyboard
 
-# def kb_company(list_company=all_company) -> types.ReplyKeyboardMarkup:
-#     # list_company = ['ГО', 'Evolet']
-#     builder = ReplyKeyboardBuilder()
-#     for i in range(len(list_company)):
-#         builder.add(types.KeyboardButton(text=str(i+1)))
-#     builder.adjust(5)
-#
-#     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True, input_field_placeholder="Выберите что вам нужно")

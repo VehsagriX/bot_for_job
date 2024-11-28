@@ -26,16 +26,13 @@ class Request(StatesGroup):
 
 class EditState(StatesGroup):
     edit_state = State()
-    edit_phone = State()
-    edit_email = State()
+    edit_column = State()
     edit_value_phone = State()
     edit_value_email = State()
+    edit_company = State()
+    edit_departament = State()
+
 
 class AdminState(StatesGroup):
     admin_login = State()
     work_status = State()
-
-
-
-
-
