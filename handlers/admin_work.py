@@ -1,11 +1,12 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from pyexpat.errors import messages
+
 
 from bot_states import AdminState
 from crud_request_file import show_all_requests
 from handlers.command_handlers import handle_run, admin_works
+from send_message_in_group import create_otchet, send_file_admin
 
 router = Router()
 
@@ -47,7 +48,10 @@ async def get_request_status_completed(message: Message, state: FSMContext):
 
 @router.message(F.text == 'Отчет 📊', AdminState.admin_login)
 async def get_report(message: Message, state: FSMContext):
-    pass
+    await message.answer('Отчет генерируется, подождите пожалуйся...')
+    await send_file_admin(message.from_user.id)
+    await state.clear()
+
 
 @router.message(F.text == 'Назад ️◀️', AdminState.admin_login)
 async def back_admin(message: Message, state: FSMContext):

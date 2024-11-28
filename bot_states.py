@@ -1,3 +1,5 @@
+from email.policy import default
+
 from aiogram.filters.state import StatesGroup, State
 
 
@@ -22,7 +24,12 @@ class Request(StatesGroup):
     request_creator = State()
     login_creator = State()
     request_status = State()
-
+    date_create = State()
+    time_create = State()
+    date_accepted = State()
+    time_accepted = State()
+    date_finished = State()
+    time_finished = State()
 
 class EditState(StatesGroup):
     edit_state = State()

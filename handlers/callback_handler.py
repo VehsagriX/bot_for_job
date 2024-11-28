@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from config import CHANNEL_ID_ADMIN
@@ -25,6 +27,10 @@ async def callback_accept(call: CallbackQuery):
     status_value = text[-1][1]
 
     change_value_request(request_id, key_status, status_value)
+    today = datetime.now()
+    change_value_request(request_id, 'date_accepted', today.strftime("%d.%m.%Y"))
+    change_value_request(request_id, 'time_accepted', today.strftime("%H:%M"))
+
 
     id_user = [x for x in text if 'ID Создателя' in x][0][1].strip()
     text = [':'.join(x) for x in text]
@@ -51,6 +57,8 @@ async def callback_failed(call: CallbackQuery):
     status_value = text[-1][1]
 
     change_value_request(request_id, key_status, status_value)
+    change_value_request(request_id, 'date_accepted', None)
+    change_value_request(request_id, 'time_accepted', None)
 
     text = [':'.join(x) for x in text]
     result = '\n'.join(text)
@@ -73,6 +81,9 @@ async def callback_finished(call: CallbackQuery):
     status_value = text[-1][1]
 
     change_value_request(request_id, status_key, status_value)
+    today = datetime.now()
+    change_value_request(request_id, 'date_finished', today.strftime("%d.%m.%Y"))
+    change_value_request(request_id, 'time_finished', today.strftime("%H:%M"))
     result = [':'.join(x) for x in text]
     result = '\n'.join(result)
 

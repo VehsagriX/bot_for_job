@@ -5,7 +5,7 @@ from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.utils.formatting import Text, Bold
-from pydantic.v1 import NoneStr
+
 
 from config import users_for_voucher, super_admin
 from crud_request_file import show_all_requests
@@ -202,9 +202,9 @@ async def get_back(message: Message, state: FSMContext) -> None:
 @router.message(Command('help'))
 async def handle_help(message: Message) -> None:
     """
-
-    :param message:
-    :return:
+    Фун-ция которая предоставляет все возможности бота пользователю.
+    :param message: Message которым мы отправляем и получаем сообщение
+    :return: None
     """
     text = """Этот бот разработан с целью улучшения качества коммуникации и взаимодействия с группой поддержки пользователей (ГПП) ДИТ ЗАО «КОИНОТИ НАВ». Мы стремимся предоставить максимально оперативную и эффективную помощь по всем вопросам, связанным с вопросами ИТ направления. Ваше обращение через этот канал позволит нам быстрее и эффективнее реагировать на ваши запросы, обеспечивая высокий уровень поддержки и удовлетворённости.
 Возможности бота: 

@@ -1,3 +1,8 @@
+import os
+from datetime import datetime, date
+
+import pandas as pd
+from aiogram.types.input_file import FSInputFile
 from aiogram.enums import ChatMemberStatus
 
 from config import CHANNEL_ID_ADMIN, CHANNEL_ID_USER, CHANNEL_TEST_USER, CHANNEL_TEST_ADMIN
@@ -40,3 +45,43 @@ async def get_message_request_in_group(result: dict | str, user_id: int, channel
 ID Создателя: {result.get('request_creator')}\nСвязаться с заявителем: @{result.get('login_creator')}\nИсполнитель: {result.get('request_admin')}
 Статус: {result.get('request_status')}"""
     await bot.send_message(chat_id=channel_id, text=my_text, reply_markup=inline_request_kb())
+
+
+
+
+
+def create_otchet():
+    df_users = pd.read_excel('user_file.xlsx')
+    df_requests = pd.read_excel('request_file.xlsx')
+
+    user_names = df_requests.merge(df_users[['user_login', 'user_last_name', 'user_name', 'company_name']],
+                                   how='left', left_on='request_admin',
+                                   right_on='user_login').drop(['request_admin', 'user_login'], axis=1)
+
+    user_names = user_names.merge(df_users[['user_login', 'user_last_name', 'user_name']],
+                                  how='left', left_on='login_creator',
+                                  right_on='user_login').drop(['login_creator', 'request_creator', 'user_login'],
+                                                              axis=1)
+
+    user_names['admin'] = user_names['user_last_name_x'] + ' ' + user_names['user_name_x']
+    user_names['applicant'] = user_names['user_last_name_y'] + ' ' + user_names['user_name_y']
+
+    user_names.drop(['user_last_name_x', 'user_name_x', 'user_last_name_y', 'user_name_y'], axis=1, inplace=True)
+
+    user_names.columns = ['Тип запроса', 'Идентификатор запроса', 'Заголовок запроса', 'Описание запроса',
+                          'Статус запроса', 'Дата создания', 'Время создания', 'Дата принятия', 'Время принятия','Дата завершения', 'Время завершения',
+                          'Название компании', 'Исполнитель', 'Заявитель']
+    today = datetime.today()
+    name_file = f'otchet_{today.day}.{today.month}.{today.year}.xlsx'
+    user_names.to_excel(name_file)
+    return name_file
+
+async def send_file_admin(user_id):
+    from main import bot
+    name_file = create_otchet()
+    document = FSInputFile(name_file)
+    await bot.send_document(chat_id=user_id, document=document)
+    os.remove(name_file)
+
+
+

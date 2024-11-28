@@ -45,6 +45,8 @@ users_for_voucher = [
 
 super_admin = [
     6972606957,
+    174628526,
+
 ]
 
 class Settings(BaseSettings):

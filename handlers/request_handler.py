@@ -29,6 +29,7 @@ async def handle_button(message: Message, state: FSMContext) -> None:
     await state.update_data(request_type=message.text)
     my_data = datetime.now()
     result = f'{my_data.day}{my_data.month}{my_data.year}{my_data.hour}{my_data.minute}'
+
     await state.update_data(request_id=f'{result}{message.from_user.id}')
     await state.update_data(request_creator=message.from_user.id)
     await state.update_data(login_creator=message.from_user.username)
@@ -94,6 +95,8 @@ async def handler_description(message: Message, state: FSMContext) -> None:
         await state.update_data(request_description=message.text)
         await state.update_data(request_admin='В ожидании')
         await state.update_data(request_status='Новый')
+        await state.update_data(date_create=datetime.now().strftime('%d.%m.%Y'))
+        await state.update_data(time_create=datetime.now().strftime('%H:%M'))
         await message.reply('Спасибо, ваша информация передана в ГПП.')
         await handle_run(message)
         data = await state.get_data()
