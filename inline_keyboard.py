@@ -16,6 +16,13 @@ def inline_request_chat_admin() -> InlineKeyboardMarkup:
     builder.adjust(2)
     return builder.as_markup()
 
+def voucher_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text='4 часовой', callback_data='4')
+    builder.button(text='8 часовой', callback_data='8')
+    builder.adjust(2)
+    return builder.as_markup(resize_keyboard=True, one_time_keyboard=True,)
+
 
 def kb_company(list_company=all_company) -> InlineKeyboardMarkup:
     # list_company = ['ГО', 'Evolet']

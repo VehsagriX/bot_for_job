@@ -8,7 +8,7 @@ from aiogram.enums import ParseMode
 from config import settings
 from aiogram.fsm.storage.memory import MemoryStorage
 from handlers import command_handlers, request_handler, registration_handlers, callback_handler, edit_profile, \
-    admin_work
+    admin_work, Vaucher
 from aiogram.utils.chat_action import ChatActionMiddleware
 
 from middleware import ChatTypeMiddleware
@@ -28,6 +28,7 @@ async def main():
                        registration_handlers.router,
                        edit_profile.router,
                        admin_work.router,
+                       Vaucher.router,
                        callback_handler.router)
 
     logging.basicConfig(level=logging.INFO)

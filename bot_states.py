@@ -40,6 +40,12 @@ class EditState(StatesGroup):
     edit_departament = State()
 
 
+class Voucher(StatesGroup):
+    id_user = State()
+    user_fullname = State()
+    description = State()
+    hour = State()
+
 class AdminState(StatesGroup):
     admin_login = State()
     work_status = State()

@@ -14,7 +14,7 @@ from get_vaucher import get_voucher
 from reply_keyboard import keyboard_answer, kb_get_started, edit_kb, keyboard_builder, edit_key_kb, \
     kb_run_step_user, kb_run_step_admin, kb_admin, kb_super_admin
 
-from bot_states import User, Request, EditState, AdminState
+from bot_states import User, Request, EditState, AdminState, Voucher
 from send_message_in_group import is_user_subscribed, is_admin
 
 router = Router()
@@ -178,15 +178,18 @@ async def show_all_request(message: Message) -> None:
 
 @router.message(F.text == 'Доступ к Гостевому WIFI🛜', StateFilter(default_state))
 @router.message(F.text.lower() == 'доступ к гостевому wifi🛜', StateFilter(default_state))
-async def send_voucher(message: Message):
+async def send_voucher(message: Message, state: FSMContext):
     """
-
-    :param message:
-    :return:
+    Фун-ция направляет на получение ваучера
+    :param state:
+    :param message: Message которым мы отправляем и получаем сообщением
+    :return: None
     """
     if str(message.from_user.id) in users_for_voucher:
-        result = get_voucher(message.from_user.id, message.from_user.username)
-        await message.answer(f'{result}')
+        await state.update_data(id_user=message.from_user.id)
+        await state.update_data(user_fullname=message.from_user.full_name)
+        await state.set_state(Voucher.description)
+        await message.answer('Прошу напишите цель получения доступа к Гостевому WI-FI.')
     else:
         await message.answer('Прошу прощения, у вас нет доступа. Пожалуйста обратитесь в тех. поддержку 446607070')
         await handle_run(message)
