@@ -2,9 +2,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 
 CHANNEL_ID_ADMIN = '-4555803331'
-CHANNEL_ID_USER = '-4546613771'
-CHANNEL_TEST_ADMIN = '-4578540724'
-CHANNEL_TEST_USER = '-4528923908'
+# CHANNEL_ID_USER = '-4546613771'
+# CHANNEL_TEST_ADMIN = '-4578540724'
+CHANNEL_USER = '-4528923908'
 
 VOUCHERS_PATH_4_HOUER = 'Voucher_4.xlsx'
 VOUCHERS_PATH_8_HOUER = 'Voucher_8.xlsx'
@@ -43,12 +43,15 @@ all_company = [
 users_for_voucher = [
     '6972606957',
     '283943400',
-    '174628526'
+    '174628526',
+    '895190672',
 ]
 
 super_admin = [
     6972606957,
     174628526,
+    161850895,
+
 ]
 
 class Settings(BaseSettings):

@@ -89,4 +89,4 @@ async def callback_finished(call: CallbackQuery):
 
     await call.bot.send_message(chat_id=user_id, text=result + '‼️‼️‼️')
     await call.message.edit_text(result + '‼️‼️‼️')
-    await call.bot.send_message(chat_id=CHANNEL_ID_ADMIN, text=result + '‼️‼️‼️')
+    await call.bot.send_message(chat_id=CHANNEL_TEST_ADMIN, text=result + '‼️‼️‼️')
